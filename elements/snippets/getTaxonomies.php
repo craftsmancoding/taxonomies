@@ -31,7 +31,7 @@
 
 $core_path = $modx->getOption('taxonomies.core_path', null, MODX_CORE_PATH.'components/taxonomies/');
 require_once $core_path .'vendor/autoload.php';
-$Snippet = new \taxonomies\Snippet($modx);
+$Snippet = new \Taxonomies\Base($modx);
 $Snippet->log('getTaxonomies',$scriptProperties);
 
 $innerTpl = $modx->getOption('innerTpl', $scriptProperties, '<li>[[+pagetitle]]</li>');

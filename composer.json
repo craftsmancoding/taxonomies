@@ -19,10 +19,15 @@
         "source": "http://github.com/craftsmancoding/taxonomies"
     },    
     "require": {
+        "php": ">=5.3",
+        "craftsmancoding/formbuilder": "dev-master"
     },
-    "require": {
-        "php": ">=5.3"
-    },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url":  "git@github.com:craftsmancoding/formbuilder.git"
+        }
+    ],
     "autoload": {
         "classmap":[
             "model/"

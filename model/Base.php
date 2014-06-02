@@ -1,9 +1,9 @@
 <?php 
 /**
- * BaseClass for Snippets
+ * Base class for stuff
  */
 namespace Taxonomies;
-class Snippet {
+class Base {
 
     public $modx;
     public $old_log_level;
@@ -98,4 +98,98 @@ class Snippet {
         return $out;
     }
 
+    /**
+     * getTnT : Taxonomies and Terms. BOOM.
+     *
+     * Get data structure describing taxonomy/terms for use in the form.
+     * TODO: use the json caching here.
+     * @return array containing structure compatible w Formbuilder
+     */
+    public function getTnT() {
+        $data = array();
+        $c = $this->modx->newQuery('Taxonomy');
+        $c->where(array('published'=>true,'class_key'=>'Taxonomy'));
+        $c->sortby('menuindex','ASC');        
+        if ($Ts = $this->modx->getCollection('Taxonomy', $c)) {
+            foreach ($Ts as $t) {
+/*
+                $props = $t->get('properties');
+                if (!isset($props['children'])) {
+                    continue;
+                }
+*/
+                $c = $this->modx->newQuery('Term');
+                $c->where(array('published'=>true,'class_key'=>'Term','parent'=>$t->get('id')));
+                $c->sortby('menuindex','ASC');        
+                if ($Terms = $this->modx->getCollection('Term', $c)) {
+                    foreach ($Terms as $term) {
+                        $data[ $t->get('pagetitle') ][ $term->get('id') ] = $term->get('pagetitle');
+                    }
+                }
+                // Plug the spot for the taxonomy?
+                else {
+                    $data[ $t->get('pagetitle') ] = array();
+                }
+            }
+        }
+        $this->modx->log(1,'TnT: '.print_r($data,true));
+        return $data;
+    }
+    
+    /**
+     * Get an array of term_ids for any associations with the given page_id
+     * @param integer $page_id
+     */
+    public function getPageTerms($page_id) {
+        $out = array();
+        if ($Terms = $this->modx->getCollection('PageTerm', array('page_id'=>$page_id))) {
+            foreach ($Terms as $t) {
+                $out[] = $t->get('term_id');
+            }
+        }
+        $this->modx->log(\modX::LOG_LEVEL_DEBUG, "pageTerms for page ".$page_id.': '.print_r($out,true),'',__CLASS__);        
+        return $out;
+    }
+
+    /**
+     * getForm
+     *
+     * @param object $resource current MODX resource
+     * @return string HTML form.
+     */
+    public function getForm($resource) {
+        $data = $this->getTnT();
+        $current_values = $this->getPageTerms($resource->get('id'));
+        $out = \Formbuilder\Form::multicheck('terms',$data,$current_values); 
+        return $out;
+    }
+
+
+    /**
+     * Dictate all page terms (array) for the given page_id (int)
+     * @param integer $page_id
+     * @param array $terms
+     *
+     */
+    public function dictatePageTerms($page_id,$terms) {
+        $this->modx->log(\modX::LOG_LEVEL_DEBUG, "Dictating taxonomy term_ids for page ".$page_id.': '.print_r($terms,true),'',__CLASS__);
+        $existing = $this->modx->getCollection('PageTerm',array('page_id'=>$page_id));
+        
+        $ex_array = array();
+        foreach ($existing as $e) {
+            if (!in_array($e->get('term_id', $terms))) {
+                $e->remove();
+            }
+        }
+        // Reorder
+        $seq = 0;
+        foreach ($terms as $term_id) {
+            if (!$pt = $this->modx->getObject('PageTerm',array('page_id'=>$page_id,'term_id'=>$term_id))) {
+                $pt = $this->modx->newObject('PageTerm',array('page_id'=>$page_id,'term_id'=>$term_id));
+            }
+            $pt->set('seq', $seq);
+            $pt->save();
+            $seq++;
+        }
+    }
 }

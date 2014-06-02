@@ -1,0 +1,66 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
+    ],
+    "hash": "a6456f16776384c49d51e44d538c4140",
+    "packages": [
+        {
+            "name": "craftsmancoding/formbuilder",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/craftsmancoding/formbuilder.git",
+                "reference": "f2407856e6c35c243cba3513ee0c1d9205d073be"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/craftsmancoding/formbuilder/zipball/f2407856e6c35c243cba3513ee0c1d9205d073be",
+                "reference": "f2407856e6c35c243cba3513ee0c1d9205d073be",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Formbuilder\\": "src/"
+                }
+            },
+            "authors": [
+                {
+                    "name": "Everett Griffiths",
+                    "email": "everett@craftsmancoding.com"
+                }
+            ],
+            "description": "Generate form elements for forms everywhere.",
+            "keywords": [
+                "elements",
+                "forms",
+                "html"
+            ],
+            "support": {
+                "source": "https://github.com/craftsmancoding/formbuilder/tree/master",
+                "issues": "https://github.com/craftsmancoding/formbuilder/issues"
+            },
+            "time": "2014-05-31 04:56:13"
+        }
+    ],
+    "packages-dev": [
+
+    ],
+    "aliases": [
+
+    ],
+    "minimum-stability": "stable",
+    "stability-flags": {
+        "craftsmancoding/formbuilder": 20
+    },
+    "platform": {
+        "php": ">=5.3"
+    },
+    "platform-dev": [
+
+    ]
+}
