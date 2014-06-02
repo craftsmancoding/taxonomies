@@ -54,6 +54,16 @@
             }
         ],
         "build_attributes":{
+            "Taxonomy": {
+                "preserve_keys": true,
+                "update_object": true, 
+                "unique_key": "alias"
+            },
+            "Term": {
+                "preserve_keys": true,
+                "update_object": true, 
+                "unique_key": "alias"
+            }
         }
     }
 }
