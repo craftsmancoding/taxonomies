@@ -4,14 +4,14 @@
 -->
 <model package="taxonomies" version="1.0" baseClass="xPDOObject" platform="mysql" defaultEngine="MyISAM">
 
-    <!-- ! Taxonomy: a container for Terms -->
+    <!-- ! Taxonomy (e.g. categories, tags): a container for Terms -->
     <object class="Taxonomy" extends="modResource">
         <composite alias="Terms" class="Term" local="id" foreign="parent" cardinality="many" owner="local" />
         <validation>
             <rule field="parent" name="parent" type="xPDOValidationRule" rule="TaxonomyParents" message="Invalid parent" />
         </validation>
     </object>
-    <!-- ! Terms: tags, categories, etc -->
+    <!-- ! Terms -->
     <object class="Term" extends="modResource">
         <aggregate alias="Taxonomy" class="Taxonomy" local="parent" foreign="id" cardinality="one" owner="foreign" />
         <!-- children terms of terms? -->
@@ -21,31 +21,31 @@
     </object>
     
 	
-    <!-- ! ProductTaxonomy -->
+    <!-- ! PageTaxonomy -->
     <!-- for enabling taxonomies at the page level -->
-	<object class="PageTaxonomy" table="page_taxonomies" extends="xPDOSimpleObject">
+	<!--object class="PageTaxonomy" table="page_taxonomies" extends="xPDOSimpleObject">
 		<field key="page_id" dbtype="int" precision="11" phptype="integer" null="false"/>
         <field key="taxonomy_id" dbtype="int" precision="11" phptype="integer" null="false"/>
 		<field key="seq" dbtype="tinyint" precision="3" phptype="integer" null="true" />		
 		<index alias="PRIMARY" name="PRIMARY" primary="true" unique="true">
 			<column key="id" length="" collation="A" null="false" />
 		</index>
-		<!-- no sense in adding the same relation twice... -->
-        <index alias="producttaxonomy" name="producttaxonomy" primary="false" unique="true" type="BTREE">
-			<column key="product_id" length="" collation="A" null="false" />        
+        <index alias="pagetaxonomy" name="pagetaxonomy" primary="false" unique="true" type="BTREE">
+			<column key="page_id" length="" collation="A" null="false" />        
 			<column key="taxonomy_id" length="" collation="A" null="false" />
 		</index>
         <aggregate alias="Taxonomy" class="Taxonomy" local="taxonomy_id" foreign="id" cardinality="one" owner="foreign" />
-        <aggregate alias="Product" class="Product" local="product_id" foreign="product_id" cardinality="one" owner="foreign" />
+        <aggregate alias="page" class="page" local="page_id" foreign="page_id" cardinality="one" owner="foreign" />
                 
-	</object>
+	</object-->
 	    
     <!-- ! PageTerm 
     Join table for adding tags/categories to pages 
     -->
-	<object class="ProductTerm" table="product_terms" extends="xPDOSimpleObject">
+	<object class="PageTerm" table="page_terms" extends="xPDOSimpleObject">
 		<field key="page_id" dbtype="int" precision="11" phptype="integer" null="false"/>
         <field key="term_id" dbtype="int" precision="11" phptype="integer" null="false"/>
+        <field key="seq" dbtype="tinyint" precision="3" phptype="integer" null="true" />
 		<index alias="PRIMARY" name="PRIMARY" primary="true" unique="true">
 			<column key="id" length="" collation="A" null="false" />
 		</index>

@@ -10,7 +10,7 @@ class TermCreateManagerController extends ResourceCreateManagerController {
         parent::loadCustomCssJs();
         $mgrUrl = $this->modx->getOption('manager_url',null,MODX_MANAGER_URL);
         $assetsUrl = $this->modx->getOption('taxonomies.assets_url', null, MODX_ASSETS_URL.'components/taxonomies/');
-        $this->addCss($assetsUrl.'css/mgr.css');
+        $this->addCss($assetsUrl.'css/taxonomies.tree.css');
     }    
     
         

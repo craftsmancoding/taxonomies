@@ -20,6 +20,17 @@
     },    
     "require": {
     },
+    "require": {
+        "php": ">=5.3"
+    },
+    "autoload": {
+        "classmap":[
+            "model/"
+        ],
+        "psr-4": {
+            "Taxonomies\\": "model/"
+        }
+    },    
     "extra": {
         "package_name": "Taxonomies",
         "namespace": "taxonomies",
@@ -32,7 +43,7 @@
         "seeds_path": ["model/seeds/base"],
         "packages":[
             {
-                "pkg":"taxnomies",
+                "pkg":"taxonomies",
                 "path":"model/",
                 "table_prefix": "tax_"
             }

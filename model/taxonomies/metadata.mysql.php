@@ -8,7 +8,6 @@ $xpdo_meta_map = array (
   ),
   'xPDOSimpleObject' => 
   array (
-    0 => 'PageTaxonomy',
-    1 => 'ProductTerm',
+    0 => 'PageTerm',
   ),
 );
