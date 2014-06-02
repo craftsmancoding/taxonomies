@@ -1,0 +1,5 @@
+Changelog for Taxonomies
+
+Taxonomies 1.0.0
+---------------------------------
+Developing...

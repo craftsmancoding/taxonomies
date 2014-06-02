@@ -1,0 +1,6 @@
+.icon-taxonomy .x-tree-node-icon {
+    background-image: url(../images/taxonomy-icon.png) !important;
+}
+.icon-term .x-tree-node-icon {
+    background-image: url(../images/term-icon.png) !important;
+}
