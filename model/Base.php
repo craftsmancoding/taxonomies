@@ -160,6 +160,7 @@ class Base {
     public function getForm($resource) {
         $data = $this->getTnT();
         $current_values = $this->getPageTerms($resource->get('id'));
+        
         $out = \Formbuilder\Form::multicheck('terms',$data,$current_values); 
         return $out;
     }

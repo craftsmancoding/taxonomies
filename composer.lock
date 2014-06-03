@@ -11,12 +11,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/craftsmancoding/formbuilder.git",
-                "reference": "62ea5b83c3bd8c5b5204c3b3410e43440985fc1d"
+                "reference": "43e7c0cc30006be791486089b3027728d8e066c0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/craftsmancoding/formbuilder/zipball/62ea5b83c3bd8c5b5204c3b3410e43440985fc1d",
-                "reference": "62ea5b83c3bd8c5b5204c3b3410e43440985fc1d",
+                "url": "https://api.github.com/repos/craftsmancoding/formbuilder/zipball/43e7c0cc30006be791486089b3027728d8e066c0",
+                "reference": "43e7c0cc30006be791486089b3027728d8e066c0",
                 "shasum": ""
             },
             "require": {
@@ -44,7 +44,7 @@
                 "source": "https://github.com/craftsmancoding/formbuilder/tree/master",
                 "issues": "https://github.com/craftsmancoding/formbuilder/issues"
             },
-            "time": "2014-06-03 00:37:09"
+            "time": "2014-06-03 03:29:00"
         }
     ],
     "packages-dev": [

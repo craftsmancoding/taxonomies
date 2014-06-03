@@ -4,3 +4,16 @@
 .icon-term .x-tree-node-icon {
     background-image: url(../images/term-icon.png) !important;
 }
+
+#taxonomies-resource-tab fieldset {
+	padding: 10px;
+	margin: 5px 0px;
+}
+
+#taxonomies-resource-tab fieldset legend {
+	font-size: 13px;
+}
+
+#taxonomies-resource-tab fieldset label {
+	font-size: 11px;
+}
