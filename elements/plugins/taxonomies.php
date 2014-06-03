@@ -50,10 +50,12 @@ switch ($modx->event->name) {
     // Add a custom tab to the resource panel
     //------------------------------------------------------------------------------
     case 'OnDocFormPrerender':
-        
+        $modx->log(modX::LOG_LEVEL_DEBUG,'Getting Test','taxonomies Plugin:OnManagerPageInit');
         $skip_classes = array('Taxonomy','Term');
         $class_key = $resource->get('class_key');
         
+         $modx->log(modX::LOG_LEVEL_DEBUG,'Getting '. $class_key,'','taxonomies Plugin:OnManagerPageInit');
+
         if (!in_array($class_key,$skip_classes)) {
             $T = new \Taxonomies\Base($modx);
             $form = $T->getForm($resource);
