@@ -56,9 +56,9 @@ class Term extends modResource {
     /**
      * Calculates a signature fingerprint for the Term in its current state. 
      * Used to determine if the term has changed.  The calculation must include
-     * parent (most importantly) so that updates on the parents can be triggered
-     * if a term is moved.  The fingerprint calculation should also include *all* 
-     * data points stored in the "children" array hierarchy. 
+     * parent (most importantly) so we can ripple changes up through the parents
+     * in the hierarchy if this term (a child) is moved.  The fingerprint calculation 
+     * should also include *all* data points stored in the "children" array hierarchy. 
      *
      * @return string
      */
@@ -178,6 +178,7 @@ class Term extends modResource {
      */
     public function save($cacheFlag=null) {
         $properties = $this->get('properties');
+        $this->xpdo->log(xPDO::LOG_LEVEL_DEBUG, 'Term: '.$this->get('id').' properties: '.print_r($properties,true),'',__CLASS__,basename(__FILE__),__LINE__);
         $fingerprint = $this->xpdo->getOption('fingerprint',$properties); // the old one
         $prev_parent = $this->xpdo->getOption('prev_parent',$properties); 
         $children = $this->xpdo->getOption('children',$properties,array());
@@ -186,35 +187,62 @@ class Term extends modResource {
         $this->set('properties', $properties);
         $rt = parent::save($cacheFlag); // <-- the normal save
 
+        if ($this->isNew()) {
+            $this->xpdo->log(xPDO::LOG_LEVEL_DEBUG, 'Is New');
+        }
         // old == new ?
+        // ?? WTF?? why would this never not be equal?
         if ($fingerprint == $properties['fingerprint']) {
-            $this->xpdo->log(xPDO::LOG_LEVEL_DEBUG, $this->get('id').': Fingerprint unchanged. No action taken.','',__CLASS__,basename(__FILE__),__LINE__);
+            $this->xpdo->log(xPDO::LOG_LEVEL_DEBUG, 'Term: '.$this->get('id').': Fingerprint unchanged.','',__CLASS__,basename(__FILE__),__LINE__);
             $rt = parent::save($cacheFlag); 
             return $rt; // nothing to do
         }
-        $this->xpdo->log(xPDO::LOG_LEVEL_DEBUG, 'New Fingerprint detected.',$this->get('id'),__CLASS__,basename(__FILE__),__LINE__);
+        
+        $this->xpdo->log(xPDO::LOG_LEVEL_DEBUG, 'New Fingerprint detected for this term: '.$this->get('id'),'',__CLASS__,basename(__FILE__),__LINE__);
 
-        // moved?  Run unset on prev_parent to remove this term as a child
+        /* 
+        Term moved?  Run unset on the prev_parent to remove this term as a child.
+        
+        E.g. Terms Hiearchy like this:
+            Cat. (taxonomy)
+                  A 
+                  B -> C
+        
+         Changes when C is moved over to become a child of A:
+            Cat. (taxonomy)
+                  A -> C
+                  B
+        
+         In this case, the rippling action would update A (see below) b/c it "knows" 
+         that it had a new term added, but there is no "onRemove" event where B would "know"
+         that a child term was removed.  So we fake the "onRemove" behavior by storing/caching
+         a "prev_parent" attribute in the properties and checking it against the the current parent
+         to see if we need to go clean up the "children" attributes on the prev_parent.
+         
+         In this example, "onRemove" would first remove C as a child from B & Cat.
+         Then later (below), the properties of the new parent are updated, adding C as a child of A
+         and RE-adding C as a child of Cat.
+        */
         if ($prev_parent != $this->get('parent')) {
-            $this->xpdo->log(xPDO::LOG_LEVEL_DEBUG, $this->get('id').': Move in the hierarchy detected from '.$prev_parent .' to '. $this->get('parent'),'',__CLASS__,basename(__FILE__),__LINE__);
+            $this->xpdo->log(xPDO::LOG_LEVEL_DEBUG, 'Term: '.$this->get('id').' - Move in the hierarchy detected from '.$prev_parent .' to '. $this->get('parent'),'',__CLASS__,basename(__FILE__),__LINE__);
             $PrevParent = $this->xpdo->getObject('modResource', $prev_parent);
             if ($PrevParent) {
                 $prev_parent_props = $PrevParent->get('properties');
                 unset($prev_parent_props['children'][$this->get('id')]);
                 unset($prev_parent_props['children_ids'][$this->get('id')]);
                 $PrevParent->set('properties',$prev_parent_props);
-                if (!$PrevParent->save()) { // <-- this may ripple up
+                if (!$PrevParent->save()) { // <-- this may ripple up, 
                     $this->xpdo->log(xPDO::LOG_LEVEL_DEBUG, $this->get('id').': Error saving previous parent '.$prev_parent,'',__CLASS__,basename(__FILE__),__LINE__); 
                 }
             }
         }
-       
+        // New/Existing Parent
         $Parent = $this->xpdo->getObject('modResource', $this->get('parent'));
         if (!$Parent) {
             $this->xpdo->log(xPDO::LOG_LEVEL_ERROR, 'Parent not found!',$this->get('id'),__CLASS__,basename(__FILE__),__LINE__);
             return $rt; // nothing we can do
         }
-        $this->xpdo->log(xPDO::LOG_LEVEL_DEBUG, $this->get('id').': Updating the parent ('.$this->get('parent').')','',__CLASS__,basename(__FILE__),__LINE__);
+        $this->xpdo->log(xPDO::LOG_LEVEL_DEBUG, 'Term: '.$this->get('id').': Updating the parent ('.$this->get('parent').')','',__CLASS__,basename(__FILE__),__LINE__);
         
         $parent_props = $Parent->get('properties');
         

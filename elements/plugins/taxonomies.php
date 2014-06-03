@@ -47,18 +47,22 @@ switch ($modx->event->name) {
         break;
     //------------------------------------------------------------------------------
     //! OnDocFormPrerender
-    // Add a custom tab to the resource panel
+    // Add a custom tab to the resource panel. $resource will be null for new Resources!
+    // $scriptProperties will be populated on an update.
     //------------------------------------------------------------------------------
     case 'OnDocFormPrerender':
-        $modx->log(modX::LOG_LEVEL_DEBUG,'Getting Test','taxonomies Plugin:OnManagerPageInit');
+        $modx->log(modX::LOG_LEVEL_DEBUG,'Getting Test','taxonomies Plugin:OnDocFormPrerender');
         $skip_classes = array('Taxonomy','Term');
-        $class_key = $resource->get('class_key');
-        
-         $modx->log(modX::LOG_LEVEL_DEBUG,'Getting '. $class_key,'','taxonomies Plugin:OnManagerPageInit');
+        if ($mode == 'new') {
+            $class_key = (isset($_GET['class_key'])) ? $_GET['class_key'] : 'modDocument';            
+        } 
+        else {
+            $class_key = $resource->get('class_key');    
+        }
 
         if (!in_array($class_key,$skip_classes)) {
             $T = new \Taxonomies\Base($modx);
-            $form = $T->getForm($resource);
+            $form = $T->getForm($id);
             $modx->regClientStartupHTMLBlock('<script type="text/javascript">
                 MODx.on("ready",function() {
                     MODx.addTab("modx-resource-tabs",{
@@ -67,13 +71,13 @@ switch ($modx->event->name) {
                         width: "95%",
                         html: '.json_encode(utf8_encode("$form")).'
                     });
-
                 });                
             </script>');
         }
-
         break;
+        
     case 'OnDocFormSave':
+        $modx->log(modX::LOG_LEVEL_DEBUG,'','','taxonomies Plugin:OnDocFormSave');
         $terms = $resource->get('terms');
         $T = new \Taxonomies\Base($modx);
         $T->dictatePageTerms($resource->get('id'), $terms);

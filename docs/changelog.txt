@@ -2,4 +2,9 @@ Changelog for Taxonomies
 
 Taxonomies 1.0.0
 ---------------------------------
-Developing...
+Initial public release. 
+
+Limitations: the feature set is somewhat utilitarian:
+
+    * No sub-taxonomies.  A Taxonomy folder can contain Terms ONLY.
+    * Drag and Drop interface in the MODX manager is not fully accurate.

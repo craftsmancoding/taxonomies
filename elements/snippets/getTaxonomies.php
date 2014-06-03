@@ -42,7 +42,7 @@ $sort = $modx->getOption('sort', $scriptProperties,'pagetitle');
 $dir = $modx->getOption('dir', $scriptProperties,'ASC'); 
 
 $criteria = $modx->newQuery('Taxonomy');
-$criteria->where(array('class_key'=>'Taxonomy'));
+$criteria->where(array('class_key'=>'Taxonomy','published'=>true));
 
 if ($limit) {
     $criteria->limit($limit, $start); 

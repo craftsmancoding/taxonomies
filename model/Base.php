@@ -97,7 +97,7 @@ class Base {
         }
         return $out;
     }
-
+    
     /**
      * getTnT : Taxonomies and Terms. BOOM.
      *
@@ -154,12 +154,12 @@ class Base {
     /**
      * getForm
      *
-     * @param object $resource current MODX resource
+     * @param integer $page_id current MODX resource
      * @return string HTML form.
      */
-    public function getForm($resource) {
+    public function getForm($page_id) {
         $data = $this->getTnT();
-        $current_values = $this->getPageTerms($resource->get('id'));
+        $current_values = $this->getPageTerms($page_id);
         
         $out = \Formbuilder\Form::multicheck('terms',$data,$current_values); 
         return $out;

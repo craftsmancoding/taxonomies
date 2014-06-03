@@ -197,7 +197,7 @@ class TaxonomyCreateProcessor extends modResourceCreateProcessor {
         // Make sure this is not saved anywhere it shouldn't be
         $parent = $this->modx->getObject('modResource',$this->object->get('parent'));
         if ($parent) {
-            $this->modx->log(1, print_r($parent->toArray(),true));
+            $this->modx->log(4, print_r($parent->toArray(),true),'','Taxonomy::beforeSave');
         }
 /*
         if ($parent) {

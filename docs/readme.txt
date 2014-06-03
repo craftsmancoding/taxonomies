@@ -9,7 +9,8 @@ fields can get become blurry, but the distinction is that taxonomies are intende
 searching on your site, and the relationship between a page and its terms is always one-to-many.
 
 Unlike other solutions, this package uses custom tables to store the relational data so that the results
-are easily queried.
+are easily (and quickly) queried.
+
 
 
 Installation
@@ -61,9 +62,17 @@ If you want a taxonomy or term to be active for selection when creating or editi
 taxonomy- or term-page is published.  Unpublishing the taxonomy or term will make it disappear from any page
 editing menus.
 
+Terms may be nested, e.g. a "Mammal" term may have children "Dog" and "Cat".  
+
+
 
 Known Problems
 --------------
+
+The GUI in the MODX resource tree is not easily customizable for the behavior this package needs, so there are
+regretfully some "warts" on the UI.  For example, if you right-click on the web context, the menu shows an item
+for "Create a New Term Here": but actually completing this action will fail because it is restricted on the 
+backend.  Some changes to the Ext JS in the core are required before this can be fully fixed.
 
 A Term *must* be a child of Taxonomy.  Some of the manager UI does not issue proper warnings when drag-and-drop
 operations are performed with the Term- and Taxonomy-pages.  It may appear that the page has been relocated, 

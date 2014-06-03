@@ -62,40 +62,42 @@ class taxonomyTest extends \PHPUnit_Framework_TestCase {
         if (!self::$Term['a'] = self::$modx->getObject('Term', array('alias'=>'test-term-a'))) {
             self::$Term['a'] = self::$modx->newObject('Term');
             self::$Term['a']->fromArray(array(
-                'parent' => self::$Tax->get('id'),
                 'pagetitle' => 'Test Term A',
                 'alias' => 'test-term-a',
                 'class_key' => 'Term',
                 'isfolder' => 1,
                 'published' => 1
             ));
-            self::$Term['a']->save();        
         }
+        self::$Term['a']->set('parent', self::$Tax->get('id'));
+        self::$Term['a']->save();   
+             
         if (!self::$Term['b'] = self::$modx->getObject('Term', array('alias'=>'test-term-b'))) {
             self::$Term['b'] = self::$modx->newObject('Term');
             self::$Term['b']->fromArray(array(
-                'parent' => self::$Tax->get('id'),
                 'pagetitle' => 'Test Term B',
                 'alias' => 'test-term-b',
                 'class_key' => 'Term',
                 'isfolder' => 1,
                 'published' => 1
-            ));
-            self::$Term['b']->save();        
+            ));    
         }
+        self::$Term['b']->set('parent', self::$Tax->get('id'));
+        self::$Term['b']->save();        
+        
         if (!self::$Term['c'] = self::$modx->getObject('Term', array('alias'=>'test-term-c'))) {
             self::$Term['c'] = self::$modx->newObject('Term');
             self::$Term['c']->fromArray(array(
-                'parent' => self::$Tax->get('id'),
                 'pagetitle' => 'Test Term C',
                 'alias' => 'test-term-c',
                 'class_key' => 'Term',
                 'isfolder' => 1,
                 'published' => 1
             ));
-            self::$Term['c']->save();        
         }
-        
+        self::$Term['c']->set('parent', self::$Tax->get('id'));
+        self::$Term['c']->save();        
+                
         // Some pages for testing associations
         if (!self::$P['1'] = self::$modx->getObject('modResource', array('alias'=>'test-page1'))) {
             self::$P['1'] = self::$modx->newObject('modResource');
@@ -149,14 +151,139 @@ class taxonomyTest extends \PHPUnit_Framework_TestCase {
 
     }
     
-    
+    private function _resetTermParent() {
+        // Make sure the terms are all put back under the parent tax
+        self::$Term['a']->set('parent',self::$Tax->get('id'));
+        self::$Term['a']->save();
+        self::$Term['b']->set('parent',self::$Tax->get('id'));
+        self::$Term['b']->save();
+        self::$Term['c']->set('parent',self::$Tax->get('id'));
+        self::$Term['c']->save();     
+    }
     /**
-     * 
+     * The trickiest thing here is how we track and update the parent taxonomy properties 
+     * and the hierarchical terms.
      *
+     Taxonomy Properties
+    {
+        "children":{
+            "225":{
+                "alias":"test-term-3",
+                "pagetitle":"Term 3",
+                "published":true,
+                "menuindex":0,
+                "children":[]
+            }
+        },
+        "children_ids":{
+            "225":true
+        }
+    }
+     
+     Term Properties (simple, no children):
+     {
+        "fingerprint":"f391e15428e162fe2c1744f5359490d4",
+        "prev_parent":224
+    }
+    
+    Term Properties (hierarchical, with children):     
+    {
+        "fingerprint":"1e735c4df641479da517f3b3fdd06266",
+        "prev_parent":220,
+        "children":{
+            "223":{
+                "alias":"test-term-1",
+                "pagetitle":"Term 1",
+                "published":true,
+                "menuindex":0,"children":[]
+            }
+        },
+        "children_ids":{
+            "223":true
+        }
+    }     
+     
      */
-    public function testRelations() {
+/*
+    public function testBasicProperties() {
         //self::$modx->setLogTarget('ECHO');
         //self::$modx->setLogLevel(4);    
+       
+        $this->_resetTermParent();
+        
+        $p = self::$Tax->get('properties');
+        //print_r($p); exit;
+        $this->assertTrue(isset($p['children_ids']));
+        $this->assertTrue(isset($p['children']) && is_array($p['children']));        
+        $this->assertTrue($p['children_ids'][ self::$Term['a']->get('id') ]);
+        $this->assertTrue($p['children_ids'][ self::$Term['b']->get('id') ]);
+        $this->assertTrue($p['children_ids'][ self::$Term['c']->get('id') ]); 
+        
+        foreach ($p['children'] as $term_id => $tdata) {
+            $T = self::$modx->getObject('Term', $term_id);
+            $this->assertTrue(!empty($T));
+            $this->assertEquals($T->get('pagetitle'), $tdata['pagetitle']);
+            $tprops = $T->get('properties');
+            $this->assertTrue(empty($tprops['children'])); // no sub-children
+        }    
+        
+    }
+*/
+
+    public function testMoveTerm() {
+        self::$modx->setLogTarget('ECHO');
+        self::$modx->setLogLevel(4);    
+       
+        $this->_resetTermParent();
+        
+        // Make into a hierarchy: A --> B 
+        self::$Term['b']->set('parent',self::$Term['a']->get('id'));
+        self::$Term['b']->save();
+        
+        // This should be unchanged:
+        $p = self::$Tax->get('properties');
+        $this->assertTrue(isset($p['children_ids']));
+        $this->assertTrue(isset($p['children']) && is_array($p['children']));        
+        $this->assertTrue($p['children_ids'][ self::$Term['a']->get('id') ]);
+        $this->assertTrue($p['children_ids'][ self::$Term['b']->get('id') ]);
+        $this->assertTrue($p['children_ids'][ self::$Term['c']->get('id') ]); 
+        
+        
+        
+        
+/*
+        // Make into a hierarchy: A --> B --> C
+        self::$Term['c']->set('parent',self::$Term['b']->get('id'));
+        self::$Term['c']->save();        
+        self::$Term['b']->set('parent',self::$Term['a']->get('id'));
+        self::$Term['b']->save();
+        
+        // This should be unchanged:
+        $p = self::$Tax->get('properties');
+        $this->assertTrue(isset($p['children_ids']));
+        $this->assertTrue(isset($p['children']) && is_array($p['children']));        
+        $this->assertTrue($p['children_ids'][ self::$Term['a']->get('id') ]);
+        $this->assertTrue($p['children_ids'][ self::$Term['b']->get('id') ]);
+        $this->assertTrue($p['children_ids'][ self::$Term['c']->get('id') ]); 
+*/
+
+        
+        
+    }
+
+    
+    public function testSnippet() {
+/*
+        global $modx;
+        $modx = self::$modx;
+        
+        $props = array();
+        $props['options'] = 'sample-api-key';
+        $props['name'] = 'price';
+        $props['input'] = '29.99';
+        $actual = $modx->runSnippet('secure', $props);
+*/
+        
 
         
     }
