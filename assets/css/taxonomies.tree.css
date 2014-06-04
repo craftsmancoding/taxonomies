@@ -12,8 +12,12 @@
 
 #taxonomies-resource-tab fieldset legend {
 	font-size: 13px;
+	width: auto !important;
+	margin-bottom: auto !important;
+	border: none !important;
 }
 
 #taxonomies-resource-tab fieldset label {
 	font-size: 11px;
+	display: inline !important;
 }
