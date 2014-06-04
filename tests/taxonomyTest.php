@@ -271,6 +271,13 @@ class taxonomyTest extends \PHPUnit_Framework_TestCase {
         
     }
 
+    /**
+     * Creating a new term should ripple up the hierarchy.
+     *
+     */
+    public function testCreateRippleUp() {
+    
+    }
     
     public function testSnippet() {
 /*
