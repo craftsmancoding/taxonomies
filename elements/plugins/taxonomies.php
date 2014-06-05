@@ -47,8 +47,10 @@ switch ($modx->event->name) {
         break;
     //------------------------------------------------------------------------------
     //! OnDocFormPrerender
-    // Add a custom tab to the resource panel. $resource will be null for new Resources!
-    // $scriptProperties will be populated on an update.
+    // Add a custom tab to the resource panel for resource types OTHER THAN Taxonomy
+    // and Terms (no sense in categorizing categories). 
+    // We have to use $_GET to read the class_key because it's otherwise not avail.
+    // Remember: $resource will be null for new Resources!
     //------------------------------------------------------------------------------
     case 'OnDocFormPrerender':
         $modx->log(modX::LOG_LEVEL_DEBUG,'Getting Test','taxonomies Plugin:OnDocFormPrerender');
@@ -78,8 +80,9 @@ switch ($modx->event->name) {
         
     case 'OnDocFormSave':
         $modx->log(modX::LOG_LEVEL_DEBUG,'','','taxonomies Plugin:OnDocFormSave');
-        $terms = $resource->get('terms');
-        $T = new \Taxonomies\Base($modx);
-        $T->dictatePageTerms($resource->get('id'), $terms);
+        if ($terms = $resource->get('terms')) {
+            $T = new \Taxonomies\Base($modx);
+            $T->dictatePageTerms($resource->get('id'), $terms);
+        }
         break;
 }

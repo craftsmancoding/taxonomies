@@ -191,6 +191,7 @@ class TaxonomyCreateProcessor extends modResourceCreateProcessor {
     }
 
 
+/*
     public function beforeSave() {
         $afterSave = parent::beforeSave();
 
@@ -199,23 +200,25 @@ class TaxonomyCreateProcessor extends modResourceCreateProcessor {
         if ($parent) {
             $this->modx->log(4, print_r($parent->toArray(),true),'','Taxonomy::beforeSave');
         }
-/*
-        if ($parent) {
-            $this->object->setProperties($container->getProperties('articles'),'articles');
-        }
-*/
+
+        //if ($parent) {
+        //    $this->object->setProperties($container->getProperties('articles'),'articles');
+        //}
+
 
 //        $this->isPublishing = $this->object->isDirty('published') && $this->object->get('published');
         return $afterSave;
     }
+*/
 
 }
 class TaxonomyUpdateProcessor extends modResourceUpdateProcessor {
+/*
     public function beforeSave() {
+        return parent::beforeSave();
         $afterSave = parent::beforeSave();
 
         // Make sure this is not saved anywhere it shouldn't be
-/*
         $parent = $this->modx->getObject('modResource',$this->object->get('parent'));
         if ($parent) {
             $this->modx->log(1, print_r($parent->toArray(),true));
@@ -223,6 +226,6 @@ class TaxonomyUpdateProcessor extends modResourceUpdateProcessor {
         else {
             $this->modx->log(1, 'No Parent!');
         }
-*/
     }
+*/
 }

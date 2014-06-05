@@ -99,13 +99,13 @@ class Base {
     }
     
     /**
-     * getTnT : Taxonomies and Terms. BOOM.
+     * getTaxonomiesAndTerms : Taxonomies and Terms. BOOM.
      *
      * Get data structure describing taxonomy/terms for use in the form.
      * TODO: use the json caching here.
-     * @return array containing structure compatible w Formbuilder
+     * @return array containing structure compatible w Formbuilder: $data['Taxonomy Name']['Term Name'] = page ID
      */
-    public function getTnT() {
+    public function getTaxonomiesAndTerms() {
         $data = array();
         $c = $this->modx->newQuery('Taxonomy');
         $c->where(array('published'=>true,'class_key'=>'Taxonomy'));
@@ -132,7 +132,7 @@ class Base {
                 }
             }
         }
-        $this->modx->log(1,'TnT: '.print_r($data,true));
+        $this->modx->log(4,'getTaxonomiesAndTerms: '.print_r($data,true));
         return $data;
     }
     
@@ -158,7 +158,7 @@ class Base {
      * @return string HTML form.
      */
     public function getForm($page_id) {
-        $data = $this->getTnT();
+        $data = $this->getTaxonomiesAndTerms();
         $current_values = $this->getPageTerms($page_id);
         
         $out = \Formbuilder\Form::multicheck('terms',$data,$current_values); 
