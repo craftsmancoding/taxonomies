@@ -1,19 +1,16 @@
 <?php
 /**
- * @name getPageTerms
- * @description Returns a list of terms (e.g. a tag cloud) for the given page (e.g. resource)
+ * @name getPagesByTerm
+ * @description Returns a list of pages associated with the given term id
  * 
- * Available Placeholders
- * ---------------------------------------
- * id, product_id, term_id,term,properties
- * use as [[+term]] on Template Parameters
- * 
+ * classname can be anything that m 
  * Parameters
  * -----------------------------
  * @param string $outerTpl Format the Outer Wrapper of List (Optional)
  * @param string $innerTpl Format the Inner Item of List
- * @param int $page_id get terms for this specific page
- * @param int $taxonomy_id limit terms to only this taxonomy
+ * @param int $term_id (optional: defaults to the current page id)
+ * @param string $classname (optional: default PageTerm)
+ *
  * @param int $limit Limit the result
  *
  * Variables
@@ -31,7 +28,14 @@
 $core_path = $modx->getOption('taxonomies.core_path', null, MODX_CORE_PATH.'components/taxonomies/');
 require_once $core_path .'vendor/autoload.php';
 $Snippet = new \Taxonomies\Base($modx);
-$Snippet->log('getPageTerms',$scriptProperties);
+$Snippet->log('getByTerm',$scriptProperties);
+
+$classname = $modx->getOption('classname', $scriptProperties, 'PageTerm');
+$term_id = $modx->getOption('term_id', $scriptProperties, $modx->resource->get('id'));
+$graph = $modx->getOption('graph', $scriptProperties, '{"Page":{}}');
+if ($Pages = $modx->getCollectionGraph($classname, $graph,array('term_id'=>$term_id))) {
+    return $Snippet->format($Pages)
+}
 
 /*
 $scriptProperties['innerTpl'] = $modx->getOption('innerTpl',$scriptProperties, 'ProductTerm');
