@@ -55,7 +55,7 @@ switch ($modx->event->name) {
     case 'OnDocFormPrerender':
         $modx->log(modX::LOG_LEVEL_DEBUG,'Getting Test','taxonomies Plugin:OnDocFormPrerender');
         $skip_classes = array('Taxonomy','Term');
-        if ($mode == 'new') {
+        if (empty($resource)) {
             $class_key = (isset($_GET['class_key'])) ? $_GET['class_key'] : 'modDocument';            
         } 
         else {
