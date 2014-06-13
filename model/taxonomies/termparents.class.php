@@ -6,18 +6,13 @@ class TermParents extends xPDOValidationRule {
         $obj=& $this->validator->object;
         $xpdo=& $obj->xpdo;
 
-        $validParentClasses = array('Taxonomy', 'Term');
+        $validParentClasses = array('Taxonomy'); // , 'Term');  // <-- todo
         if ($obj->Parent && in_array($obj->Parent->class_key, $validParentClasses)) {
            $result = true; 
         }
         if ($result === false) {
-            $xpdo->log(1, 'TermParents: FALSE');
+            $xpdo->log(\modX::LOG_LEVEL_ERROR, 'Taxonomy Term validation error: a Term may only exist as a child of '.implode(', ',$validParentClasses));
             $this->validator->addMessage($this->field, $this->name, $this->message);
-            // Seems to be no way to alert the UI
-            //$xpdo->regClientStartupHTMLBlock('<script type="text/javascript">
-            //    alert("PROBLEM!");
-            //</script>');
-
         }
  
         return $result;
