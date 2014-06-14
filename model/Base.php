@@ -144,7 +144,8 @@ class Base {
         $out = array();
         if ($Terms = $this->modx->getCollection('PageTerm', array('page_id'=>$page_id))) {
             foreach ($Terms as $t) {
-                $out[] = $t->get('term_id');
+                $out['term_id'] = $t->get('term_id');
+                $out['pagetitle'] = $t->get('title');
             }
         }
         $this->modx->log(\modX::LOG_LEVEL_DEBUG, "pageTerms for page ".$page_id.': '.print_r($out,true),'',__CLASS__);        

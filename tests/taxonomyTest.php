@@ -30,6 +30,7 @@ class taxonomyTest extends \PHPUnit_Framework_TestCase {
     public static $Tax; 
     public static $Term;
     public static $P; // Pages
+    public static $PageTerm; // PageTerms
             
     /**
      * Load up MODX for our tests.
@@ -127,6 +128,26 @@ class taxonomyTest extends \PHPUnit_Framework_TestCase {
                 'published' => 1
             ));
             self::$P['3']->save();        
+        }     
+
+        if (!self::$PageTerm['1'] = self::$modx->getObject('PageTerm', array('term_id'=>self::$Term['a']->get('id'),'page_id'=>self::$P['1']->get('id')))) {
+            self::$PageTerm['1'] = self::$modx->newObject('PageTerm');
+            self::$PageTerm['1']->fromArray(array(
+                'page_id' => self::$P['1']->get('id'),
+                'term_id' => self::$Term['a']->get('id'),
+                'seq' => 0
+            ));
+            self::$PageTerm['1']->save();        
+        }    
+
+        if (!self::$PageTerm['2'] = self::$modx->getObject('PageTerm', array('term_id'=>self::$Term['b']->get('id'),'page_id'=>self::$P['1']->get('id')))) {
+            self::$PageTerm['2'] = self::$modx->newObject('PageTerm');
+            self::$PageTerm['2']->fromArray(array(
+                'page_id' => self::$P['1']->get('id'),
+                'term_id' => self::$Term['b']->get('id'),
+                'seq' => 0
+            ));
+            self::$PageTerm['2']->save();        
         }                
         
     }
@@ -136,8 +157,8 @@ class taxonomyTest extends \PHPUnit_Framework_TestCase {
      */
     public static function tearDownAfterClass() {
 
-/*
-        self::$Store->remove();
+
+
         self::$Tax->remove();
         self::$Term['a']->remove();
         self::$Term['b']->remove();
@@ -146,8 +167,11 @@ class taxonomyTest extends \PHPUnit_Framework_TestCase {
         self::$P['1']->remove();
         self::$P['2']->remove();
         self::$P['3']->remove();
+
+        self::$PageTerm['1']->remove();
+        self::$PageTerm['2']->remove();
         
-*/
+
 
     }
     
@@ -270,6 +294,48 @@ class taxonomyTest extends \PHPUnit_Framework_TestCase {
         
         
     }
+
+    /**
+     * Test the testGetPageTerms Snippet
+     *
+     */
+    public function testGetPageTerms() {
+        // You MUST set $modx as a global variable, or runSnippet will encounter errors!
+        // You have to do this for EACH test function when you are testing a Snippet!
+        global $modx;
+        $modx = self::$modx;
+        $props = array();
+        $props['taxonomy_id'] = self::$Tax->get('id');
+        $props['innerTpl'] = '<li>[[+term_id]] : [[+pagetitle]]</li>';
+        $props['outerTpl'] = '<ul>[[+content]]</ul>';  
+        $props['page_id'] = self::$P['1']->get('id');     
+ 
+        $actual = self::$modx->runSnippet('getPageTerms', $props);
+        $expected = '<ul><li>'.self::$Term['a']->get('id').' : Test Term A</li><li>'.self::$Term['b']->get('id').' : Test Term B</li></ul>';
+        $this->assertEquals($expected, $actual);
+    }
+
+    /**
+     * Test the testGetPageTerms Snippet
+     *
+     */
+    public function testGetPageTermsLimit() {
+        // You MUST set $modx as a global variable, or runSnippet will encounter errors!
+        // You have to do this for EACH test function when you are testing a Snippet!
+        global $modx;
+        $modx = self::$modx;
+        $props = array();
+        $props['taxonomy_id'] = self::$Tax->get('id');
+        $props['innerTpl'] = '<li>[[+term_id]] : [[+pagetitle]]</li>';
+        $props['outerTpl'] = '<ul>[[+content]]</ul>';  
+        $props['page_id'] = self::$P['1']->get('id'); 
+        $props['limit'] = 1;     
+ 
+        $actual = self::$modx->runSnippet('getPageTerms', $props);
+        $expected = '<ul><li>'.self::$Term['a']->get('id').' : Test Term A</li></ul>';
+        $this->assertEquals($expected, $actual);
+    }
+
 
     /**
      * Creating a new term should ripple up the hierarchy.
