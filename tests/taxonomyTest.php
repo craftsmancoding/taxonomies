@@ -255,7 +255,7 @@ class taxonomyTest extends \PHPUnit_Framework_TestCase {
 */
 
     public function testMoveTerm() {
-        self::$modx->setLogTarget('ECHO');
+/*        self::$modx->setLogTarget('ECHO');
         self::$modx->setLogLevel(4);    
        
         $this->_resetTermParent();
@@ -270,7 +270,7 @@ class taxonomyTest extends \PHPUnit_Framework_TestCase {
         $this->assertTrue(isset($p['children']) && is_array($p['children']));        
         $this->assertTrue($p['children_ids'][ self::$Term['a']->get('id') ]);
         $this->assertTrue($p['children_ids'][ self::$Term['b']->get('id') ]);
-        $this->assertTrue($p['children_ids'][ self::$Term['c']->get('id') ]); 
+        $this->assertTrue($p['children_ids'][ self::$Term['c']->get('id') ]); */
         
         
         
@@ -336,6 +336,32 @@ class taxonomyTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals($expected, $actual);
     }
 
+    public function testGetTagCloud() {
+        // You MUST set $modx as a global variable, or runSnippet will encounter errors!
+        // You have to do this for EACH test function when you are testing a Snippet!
+        global $modx;
+        $modx = self::$modx;
+        $props = array();
+        $props['innerTpl'] = '<li>[[+pagetitle]] <strong>([[+count]])</strong></li>';
+        $props['outerTpl'] = '<ul>[[+content]]</ul>';  
+        $actual = self::$modx->runSnippet('getTagCloud', $props);
+        $expected = '<ul><li>Test Term A <strong>(1)</strong></li><li>Test Term B <strong>(1)</strong></li></ul>';
+        $this->assertEquals($expected, $actual);  
+    }
+
+    public function testGetTagCloudIncludeEmpty() {
+        // You MUST set $modx as a global variable, or runSnippet will encounter errors!
+        // You have to do this for EACH test function when you are testing a Snippet!
+        global $modx;
+        $modx = self::$modx;
+        $props = array();
+        $props['includeEmpty'] = 1;
+        $props['innerTpl'] = '<li>[[+pagetitle]] <strong>([[+count]])</strong></li>';
+        $props['outerTpl'] = '<ul>[[+content]]</ul>';  
+        $actual = self::$modx->runSnippet('getTagCloud', $props);
+        $expected = '<ul><li>Test Term A <strong>(1)</strong></li><li>Test Term B <strong>(1)</strong></li><li>Test Term C <strong>(0)</strong></li></ul>';
+        $this->assertEquals($expected, $actual);  
+    }
 
     /**
      * Creating a new term should ripple up the hierarchy.
