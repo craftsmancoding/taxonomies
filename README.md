@@ -11,6 +11,9 @@ searching on your site, and the relationship between a page and its terms is alw
 Unlike other solutions, this package uses custom tables to store the relational data so that the results
 are easily (and quickly) queried.
 
+![Taxonomies](https://raw.githubusercontent.com/wiki/craftsmancoding/taxonomies/images/resource-tree.jpg "Taxonomies in Action")
+
+![Taxonomies on your pages](https://raw.githubusercontent.com/wiki/craftsmancoding/taxonomies/images/resource-edit.jpg "Taxonomies on your pages")
 
 
 ## Installation
