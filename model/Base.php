@@ -67,8 +67,11 @@ class Base {
         
         $out = '';
         foreach ($records as $r) {
-            if (is_object($r)) $r = $r->toArray(); // Handle xPDO objects
+            if (is_object($r)) {
+                $r = $this->flattenArray($r->toArray('',false,false,true)); // Handle xPDO objects
+            }
             // Use a temporary Chunk when dealing with raw formatting strings
+//            return print_r($r,true);
             if ($use_tmp_chunk) {
                 $uniqid = uniqid();
                 $innerChunk = $this->modx->newObject('modChunk', array('name' => "{tmp-inner}-{$uniqid}"));
@@ -132,7 +135,7 @@ class Base {
                 }
             }
         }
-        $this->modx->log(4,'getTaxonomiesAndTerms: '.print_r($data,true));
+        //$this->modx->log(4,'getTaxonomiesAndTerms: '.print_r($data,true));
         return $data;
     }
     
@@ -194,4 +197,22 @@ class Base {
             $seq++;
         }
     }
+    
+    /**
+     * Given a possibly deeply nested array, this flattens it to simple key/value pairs
+     * @param array $array
+     * @param string $prefix (needed for recursion)
+     * @return array
+     */
+    public function flattenArray(array $array,$prefix='') {
+        $result = array();
+        foreach ($array as $key => $value)
+        {
+            if (is_array($value))
+                $result = array_merge($result, $this->flattenArray($value, $prefix . $key . '.'));
+            else
+                $result[$prefix . $key] = $value;
+        }   
+        return $result;
+    }    
 }

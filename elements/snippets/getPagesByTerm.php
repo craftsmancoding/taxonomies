@@ -10,6 +10,7 @@
  * @param string $innerTpl Format the Inner Item of List
  * @param int $term_id (optional: defaults to the current page id)
  * @param string $classname (optional: default PageTerm)
+ * @param boolean $debug (optional: if set, will output SQL query for debugging)
  *
  * @param int $limit Limit the result
  *
@@ -20,7 +21,7 @@
  *
  * Usage
  * ------------------------------------------------------------
- * [[!getPageTerms? &page_id=`[[+page_id]]` &outerTpl=`sometpl` &innerTpl=`othertpl` &limit=`0`]]
+ * [[!getPagesByTerm? &term_id=`1` &outerTpl=`sometpl` &innerTpl=`othertpl` &limit=`0`]]
  *
  * @package taxonomies
  **/
@@ -30,17 +31,30 @@ require_once $core_path .'vendor/autoload.php';
 $Snippet = new \Taxonomies\Base($modx);
 $Snippet->log('getByTerm',$scriptProperties);
 
+$debug = $modx->getOption('debug', $scriptProperties);
 $classname = $modx->getOption('classname', $scriptProperties, 'PageTerm');
 $term_id = $modx->getOption('term_id', $scriptProperties, $modx->resource->get('id'));
 $graph = $modx->getOption('graph', $scriptProperties, '{"Page":{}}');
-if ($Pages = $modx->getCollectionGraph($classname, $graph,array('term_id'=>$term_id))) {
-    return $Snippet->format($Pages)
+$outerTpl = $modx->getOption('outerTpl',$scriptProperties, '<ul>[[+content]]</ul>');
+$innerTpl = $modx->getOption('innerTpl',$scriptProperties, '<li>[[+pagetitle]]</li>');
+
+$c = $modx->newQuery($classname);
+$filters = array();
+$filters['term_id'] = $term_id;
+if (isset($scriptProperties['class_key'])) {
+    $filters['Page.class_key'] = $scriptProperties['class_key'];
+}
+$c->where($filters);
+
+if ($debug) {
+    $c->bindGraph($graph);
+    $c->prepare();
+    return '<textarea rows="20" cols="40">'.$c->toSQL().'</textarea>';
 }
 
-/*
-$scriptProperties['innerTpl'] = $modx->getOption('innerTpl',$scriptProperties, 'ProductTerm');
-
-$moxySnippet = new taxonomies\Snippet($modx);
-$out = $moxySnippet->execute('json_product_terms',$scriptProperties);
-return $out;
-*/
+if ($Pages = $modx->getCollectionGraph($classname, $graph,$c)) {
+    return $Snippet->format($Pages,$innerTpl,$outerTpl);
+}
+else {
+    return '<!-- getPagesByTerm no results -->';
+}
