@@ -60,9 +60,9 @@ class Base {
         }
         
         // A Chunk Name was passed
-        $use_tmp_chunk = false;
-        if (!$innerChunk = $this->modx->getObject('modChunk', array('name' => $innerTpl))) {
-            $use_tmp_chunk = true;
+        $use_real_chunk = false;
+        if ($innerChunk = $this->modx->getObject('modChunk', array('name' => $innerTpl))) {
+            $use_real_chunk = true;
         }
         
         $out = '';
@@ -70,17 +70,17 @@ class Base {
             if (is_object($r)) {
                 $r = $this->flattenArray($r->toArray('',false,false,true)); // Handle xPDO objects
             }
+
+            // Pull up a real chunk
+            if ($use_real_chunk) {
+                $out .= $this->modx->getChunk($innerTpl, $r);
+            }
             // Use a temporary Chunk when dealing with raw formatting strings
-//            return print_r($r,true);
-            if ($use_tmp_chunk) {
+            else {
                 $uniqid = uniqid();
                 $innerChunk = $this->modx->newObject('modChunk', array('name' => "{tmp-inner}-{$uniqid}"));
                 $innerChunk->setCacheable(false);    
-                $out .= $innerChunk->process($r, $innerTpl);
-            }
-            // Use getChunk when a chunk name was passed
-            else {
-                $out .= $this->modx->getChunk($innerTpl, $r);
+                $out .= $innerChunk->process($r, $innerTpl);                
             }
         }
         
