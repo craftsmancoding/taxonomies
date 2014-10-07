@@ -138,10 +138,11 @@ class Base {
         //$this->modx->log(4,'getTaxonomiesAndTerms: '.print_r($data,true));
         return $data;
     }
-    
+
     /**
      * Get an array of term_ids for any associations with the given page_id
      * @param integer $page_id
+     * @return array
      */
     public function getPageTerms($page_id) {
         $out = array();
@@ -172,15 +173,15 @@ class Base {
 
     /**
      * Dictate all page terms (array) for the given page_id (int)
+     * This forces the modx_page_terms table (PageTerm object) to have the latest info.
      * @param integer $page_id
-     * @param array $terms
+     * @param array $terms (array of page ids representing terms)
      *
      */
     public function dictatePageTerms($page_id,$terms) {
         $this->modx->log(\modX::LOG_LEVEL_DEBUG, "Dictating taxonomy term_ids for page ".$page_id.': '.print_r($terms,true),'',__CLASS__);
         $existing = $this->modx->getCollection('PageTerm',array('page_id'=>$page_id));
-        
-        $ex_array = array();
+
         foreach ($existing as $e) {
             if (!in_array($e->get('term_id', $terms))) {
                 $e->remove();

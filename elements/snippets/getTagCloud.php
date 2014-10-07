@@ -37,25 +37,29 @@ $outerTpl = $modx->getOption('outerTpl',$scriptProperties, '<ul>[[+content]]</ul
 $innerTpl = $modx->getOption('innerTpl',$scriptProperties, '<li>[[+pagetitle]] <strong>([[+count]])</strong></li>');
 
 
-if($includeEmpty == 1) {
+if($includeEmpty == 1)
+{
 	$sql = "SELECT doc.id, doc.pagetitle, count(terms.page_id) count
 		FROM modx_site_content doc
 		LEFT JOIN tax_page_terms terms ON doc.id = terms.term_id
 		WHERE doc.class_key='Term'
-		GROUP BY doc.id;";
-} else {
+		GROUP BY doc.id";
+}
+else
+{
 	$sql = "SELECT terms.term_id, doc.pagetitle, count(*) count
 		FROM modx_site_content doc
 		JOIN tax_page_terms terms ON terms.term_id = doc.id
 		WHERE doc.class_key='Term'
-		GROUP BY terms.term_id;";	
+		GROUP BY terms.term_id";
 }
 
 
 $obj = $modx->query($sql);
 $results = $obj->fetchAll(PDO::FETCH_ASSOC);
 
-if(count($results) == 0) {
+if(count($results) == 0)
+{
 	$modx->log(\modX::LOG_LEVEL_DEBUG, "No results found",'','getTagCloud',__LINE__);
 }
 

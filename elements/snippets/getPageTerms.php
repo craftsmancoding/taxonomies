@@ -2,7 +2,10 @@
 /**
  * @name getPageTerms
  * @description Returns a list of terms (e.g. a tag cloud) for the given page (e.g. resource)
- * 
+ *
+ * Note: this Snippet does not calculate any term hierarchies: it only displays the *exact* terms
+ * associated with a given page.
+ *
  * Available Placeholders
  * ---------------------------------------
  * term_id, pagetitle
