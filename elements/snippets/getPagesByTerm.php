@@ -3,7 +3,8 @@
  * @name getPagesByTerm
  * @description Returns a list of pages associated with the given term id
  * 
- * classname can be anything that m 
+ * classname can be updated if you have implemented your own join table that joins term_ids with your own objects
+ * TODO: lookup children ids
  * Parameters
  * -----------------------------
  * @param string $outerTpl Format the Outer Wrapper of List (Optional)
