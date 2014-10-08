@@ -155,7 +155,6 @@ class Base
             foreach ($Ts as $t)
             {
                 $out .= '<fieldset><legend>' . $t->get('pagetitle') . '</legend>';
-
                 $properties = $t->get('properties');
                 if ($children = $this->modx->getOption('children', $properties, array()))
                 {
@@ -210,8 +209,6 @@ class Base
         if ($Terms = $this->modx->getCollection('PageTerm', array('page_id' => $page_id))) {
             foreach ($Terms as $t) {
                 $out[] = $t->get('term_id');
-                //$out['term_id'] = $t->get('term_id');
-                //$out['pagetitle'] = $t->get('title');
             }
         }
         $this->modx->log(\modX::LOG_LEVEL_DEBUG, "pageTerms for page " . $page_id . ': ' . print_r($out, true), '', __CLASS__);
@@ -226,15 +223,8 @@ class Base
      */
     public function getForm($page_id)
     {
-        //return '<pre>Page id:'. $page_id.'</pre>';
         $current_values = $this->getPageTerms($page_id);
-        //return '<pre>'.print_r($current_values,true).'</pre>';
         return $this->buildForm($current_values);
-        $data = $this->getTaxonomiesAndTerms();
-
-
-        $out = \Formbuilder\Form::multicheck('terms', $data, $current_values);
-        return $out;
     }
 
 
