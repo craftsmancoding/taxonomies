@@ -680,4 +680,10 @@ class taxonomyTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue(isset($term_ids['666']));
 
     }
+
+    public function testGetTaxonomiesAndTerms()
+    {
+
+    }
+
 }
