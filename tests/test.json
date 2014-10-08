@@ -11,16 +11,19 @@
                     "pagetitle": "Dogs",
                     "published": true,
                     "menuindex": 0,
-                    "children": []
+                    "children": {
+                        "1267": {
+                            "alias": "labs",
+                            "pagetitle": "Labs",
+                            "published": true,
+                            "menuindex": 0,
+                            "children": []
+                        }
+                    }
                 }
             }
         },
-        "1264": {
-            "alias": "reptiles",
-            "pagetitle": "Reptiles",
-            "published": true,
-            "menuindex": 1, "children": []
-        }
-    },
-    "children_ids": {"1265": true, "1263": true, "1264": true}
+        "1264": {"alias": "reptiles", "pagetitle": "Reptiles", "published": true, "menuindex": 1, "children": []},
+        "1266": {"alias": "amphibians", "pagetitle": "Amphibians", "published": true, "menuindex": 2, "children": []}
+    }, "children_ids": {"1267": true, "1265": true, "1263": true, "1264": true, "1266": true}
 }

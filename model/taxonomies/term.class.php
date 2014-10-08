@@ -73,7 +73,7 @@ class Term extends modResource
         $properties = $this->get('properties');
         $children = $this->xpdo->getOption('children', $properties, array());
         return md5($this->get('parent') . $this->get('alias')
-            . $this->get('pagetitle') . $this->get('menuindex') . json_encode($children));
+            . $this->get('pagetitle') . $this->get('menuindex') . $this->get('published').json_encode($children));
     }
 
     /**
