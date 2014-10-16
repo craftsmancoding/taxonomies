@@ -177,6 +177,7 @@ class Base
      */
     public function getFieldItems($current_values,$children, $indent_multiplier = 0, $class = '')
     {
+  
         $out = '';
         foreach ($children as $page_id => $def) {
             $indent = str_repeat('--', $indent_multiplier);
@@ -192,7 +193,7 @@ class Base
                     $out .= $this->getFieldItems($current_values,$def['children'], $indent_multiplier+1, $class);
                 }
             }
-            $indent_multiplier--;
+            //$indent_multiplier--;
         }
 
         return $out;
