@@ -2,9 +2,7 @@
 
 Bringing Taxonomies to MODX Revolution: add Categories or Tags to any MODX page.
 
-
-**Taxonomies are classifications like "Categories" or "Tags" that help you to organize pages on your site
-so they are easier to find in searches.**  
+> Taxonomies are classifications like "Categories" or "Tags" that help you to organize pages on your site so they are easier to find in searches.  
 
 ### Taxonomy Terms vs. Template Variables
 
@@ -24,9 +22,9 @@ are easily (and quickly) queried.
 
 ## Installation
 
-Install this package via the MODX package manager.  See (https://github.com/craftsmancoding/taxonomies/wiki/Installation)
+Install this package via the MODX package manager.  See https://github.com/craftsmancoding/taxonomies/wiki/Installation
 
-**This package REQUIRES PHP 5.3 or greater!!!**  
+> **This package REQUIRES PHP 5.3 and MODX 2.3 or Greater**
 
 
 ### Advanced Installation (Developers Only)

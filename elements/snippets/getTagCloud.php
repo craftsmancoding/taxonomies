@@ -34,12 +34,12 @@ $Snippet->log('getTagCloud',$scriptProperties);
 
 $includeEmpty = $modx->getOption('includeEmpty',$scriptProperties, 0);
 $outerTpl = $modx->getOption('outerTpl',$scriptProperties, '<ul>[[+content]]</ul>');
-$innerTpl = $modx->getOption('innerTpl',$scriptProperties, '<li>[[+pagetitle]] <strong>([[+count]])</strong></li>');
+$innerTpl = $modx->getOption('innerTpl',$scriptProperties, '<li><a href="[[~[[+id]]]]">[[+pagetitle]]</a> <strong>([[+count]])</strong></li>');
 
 
 if($includeEmpty == 1)
 {
-	$sql = "SELECT doc.id, doc.pagetitle, count(terms.page_id) count
+	$sql = "SELECT doc.id as id, doc.pagetitle, count(terms.page_id) count
 		FROM modx_site_content doc
 		LEFT JOIN tax_page_terms terms ON doc.id = terms.term_id
 		WHERE doc.class_key='Term'
@@ -47,7 +47,7 @@ if($includeEmpty == 1)
 }
 else
 {
-	$sql = "SELECT terms.term_id, doc.pagetitle, count(*) count
+	$sql = "SELECT terms.term_id as id, doc.pagetitle, count(*) count
 		FROM modx_site_content doc
 		JOIN tax_page_terms terms ON terms.term_id = doc.id
 		WHERE doc.class_key='Term'

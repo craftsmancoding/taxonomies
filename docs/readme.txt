@@ -18,7 +18,7 @@ Installation
 
 Install this package via the MODX package manager.
 
-**This package REQUIRES PHP 5.3 or greater!!!**
+**This package REQUIRES PHP 5.3 and MODX 2.3 or Greater**
 
 Advanced Installation (Developers Only)
 ---------------------------------

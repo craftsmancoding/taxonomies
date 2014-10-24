@@ -39,7 +39,7 @@ $Snippet->log('getPageTerms',$scriptProperties);
 
 $page_id = $modx->getOption('page_id',$scriptProperties,null);
 $outerTpl = $modx->getOption('outerTpl',$scriptProperties, '<ul>[[+content]]</ul>');
-$innerTpl = $modx->getOption('innerTpl',$scriptProperties, '<li>[[+term_id]] : [[+pagetitle]]</li>');
+$innerTpl = $modx->getOption('innerTpl',$scriptProperties, '<li><a href="[[~[[+term_id]]]]">[[+pagetitle]]</a></li>');
 $limit = $modx->getOption('limit',$scriptProperties,10);
 $taxonomy_id = $modx->getOption('taxonomy_id',$scriptProperties,null);
 

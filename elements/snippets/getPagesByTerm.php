@@ -39,7 +39,7 @@ $classname = $modx->getOption('classname', $scriptProperties, 'PageTerm');
 $term_id = $modx->getOption('term_id', $scriptProperties, $modx->resource->get('id'));
 $graph = $modx->getOption('graph', $scriptProperties, '{"Page":{}}');
 $outerTpl = $modx->getOption('outerTpl',$scriptProperties, '<ul>[[+content]]</ul>');
-$innerTpl = $modx->getOption('innerTpl',$scriptProperties, '<li><a href="[[~[[+Page.id]]]]">[[+Page.pagetitle]]</a></li></li>');
+$innerTpl = $modx->getOption('innerTpl',$scriptProperties, '<li><a href="[[~[[+Page.id]]]]">[[+Page.pagetitle]]</a></li>');
 
 if (!$parent = $modx->getObject('modResource', $term_id)) {
     return 'Invalid Term ID.';
