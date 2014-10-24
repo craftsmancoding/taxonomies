@@ -1,10 +1,12 @@
 <?php
 /**
  * @name getPagesByTerm
- * @description Returns a list of pages associated with the given term id
+ * @description Returns a list of pages associated with the given term id OR its children (true hierarchical support)
  * 
- * classname can be updated if you have implemented your own join table that joins term_ids with your own objects
- * TODO: lookup children ids
+ * Set &classname if you have implemented your own join table that joins term_ids with your own objects.
+ * Remember that the hierarchical support means that if you search for a term, any page associated with that term
+ * OR with that page's children will be included in the result set.
+ *
  * Parameters
  * -----------------------------
  * @param string $outerTpl Format the Outer Wrapper of List (Optional)
@@ -37,11 +39,27 @@ $classname = $modx->getOption('classname', $scriptProperties, 'PageTerm');
 $term_id = $modx->getOption('term_id', $scriptProperties, $modx->resource->get('id'));
 $graph = $modx->getOption('graph', $scriptProperties, '{"Page":{}}');
 $outerTpl = $modx->getOption('outerTpl',$scriptProperties, '<ul>[[+content]]</ul>');
-$innerTpl = $modx->getOption('innerTpl',$scriptProperties, '<li>[[+pagetitle]]</li>');
+$innerTpl = $modx->getOption('innerTpl',$scriptProperties, '<li><a href="[[~[[+Page.id]]]]">[[+Page.pagetitle]]</a></li></li>');
+
+if (!$parent = $modx->getObject('modResource', $term_id)) {
+    return 'Invalid Term ID.';
+}
+$filters = array();
+
+// Append children terms if present
+$properties = $parent->get('properties');
+//return print_r($properties,true);
+if (isset($properties['children_ids'])) {
+    $children_ids = array_keys($properties['children_ids']);
+    $children_ids[] = $term_id;
+    $filters['term_id:IN'] = $children_ids;
+}
+else {
+    $filters['term_id'] = $term_id;
+}
 
 $c = $modx->newQuery($classname);
-$filters = array();
-$filters['term_id'] = $term_id;
+
 if (isset($scriptProperties['class_key'])) {
     $filters['Page.class_key'] = $scriptProperties['class_key'];
 }
@@ -50,7 +68,20 @@ $c->where($filters);
 if ($debug) {
     $c->bindGraph($graph);
     $c->prepare();
-    return '<textarea rows="20" cols="40">'.$c->toSQL().'</textarea>';
+    $outerTpl = htmlspecialchars($outerTpl);
+    $outerTpl = str_replace('[','&#091;',$outerTpl);
+    $outerTpl = str_replace(']','&#093;',$outerTpl);
+    $innerTpl = htmlspecialchars($innerTpl);
+    $innerTpl = str_replace('[','&#091;',$innerTpl);
+    $innerTpl = str_replace(']','&#093;',$innerTpl);
+    return '<h3>Debug: <code>getPagesByTerm</code></h3><textarea rows="30" cols="60">'.$c->toSQL().'</textarea>
+    <h4>Snippet Properties:</h4>
+    <strong>classname</strong> <code>'.$classname.'</code><br/>
+    <strong>term_id</strong> <code>'.$term_id.'</code><br/>
+    <strong>graph</strong> <code>'.$graph.'</code><br/>
+    <strong>outerTpl</strong> <code>'.$outerTpl.'</code><br/>
+    <strong>innerTpl</strong> <code>'.$innerTpl.'</code><br/>
+    ';
 }
 
 if ($Pages = $modx->getCollectionGraph($classname, $graph,$c)) {

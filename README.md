@@ -1,12 +1,18 @@
-## Taxonomies
+# Taxonomies
 
 Bringing Taxonomies to MODX Revolution: add Categories or Tags to any MODX page.
 
 
-Taxonomies are classifications like "Categories" or "Tags" that help you to organize and catalogue
-pages on your site so they are easier to find.  The difference between taxonomical terms and custom
-fields can get become blurry, but the distinction is that taxonomies are intended solely to improve
-searching on your site, and the relationship between a page and its terms is always one-to-many.
+**Taxonomies are classifications like "Categories" or "Tags" that help you to organize pages on your site
+so they are easier to find in searches.**  
+
+### Taxonomy Terms vs. Template Variables
+
+Adding Taxonomy terms to your pages looks a lot like adding TVs to your pages, and yes, sometimes the distinction
+can become blurry.  The distinction is that 
+
+- taxonomies are intended solely to improve searching on your site
+- the relationship between a page and its terms is always one-to-many
 
 Unlike other solutions, this package uses custom tables to store the relational data so that the results
 are easily (and quickly) queried.
@@ -18,8 +24,9 @@ are easily (and quickly) queried.
 
 ## Installation
 
-Install this package via the MODX package manager.
+Install this package via the MODX package manager.  See (https://github.com/craftsmancoding/taxonomies/wiki/Installation)
 
+**This package REQUIRES PHP 5.3 or greater!!!**  
 
 
 ### Advanced Installation (Developers Only)
@@ -50,10 +57,13 @@ This will create the necessary objects and custom tables.
 ## Usage
 
 Once the Taxonomy package has been installed, you can create new taxonomies by right-clicking on the MODX
-page tree and select "Create --> Create a Taxonomy Here".  
+page tree and select "Create --> Create a Taxonomy Here". 
 
-Taxonomy: a container for terms.  Common taxonomies are "Categories" and "Tags".  E.g. "Genres".
-Terms: an item inside the given taxonomy, e.g. "Sci-Fi" or "Romance"
+- **A Taxonomy is a container for terms.**
+- **A Term is unit inside a Taxonomy.** 
+
+For example, a "Genre" Taxonomy might have Terms of "Sci-Fi" or "Romance".  A "Color" Taxonomy might include Terms
+such as "Red" and "Blue".
 
 The Taxonomy and Term pages are custom-resource-classes (CRCs), so they appear in the MODX page tree: they 
 are MODX pages a title, alias, template, etc. You don't need to leave them in a menu, but it is a common
@@ -69,16 +79,19 @@ Terms may be nested, e.g. a "Mammal" term may have children "Dog" and "Cat".
 
 ## Known Problems
 
+**If you right-click on the web context, the menu displays the option to "Create Term Here"** 
 
-The GUI in the MODX resource tree is not easily customizable for the behavior this package needs, so there are
-regretfully some "warts" on the UI.  For example, if you right-click on the web context, the menu shows an item
-for "Create a New Term Here": but actually completing this action will fail because it is restricted on the 
-backend.  Some changes to the Ext JS in the core are required before this can be fully fixed.
+Ideally, the menu shouldn't print this as an option, but the GUI used in the MODX resource tree is not easily
+customizable (!@%$#!@ you Ext JS!).  So although that option appears in the menu, you are never allowed to complete
+that action: Terms must be the children of Taxonomies or other Terms. Some changes to the Ext JS in the core are 
+required before this can be fully fixed.
 
-A Term *must* be a child of Taxonomy.  Some of the manager UI does not issue proper warnings when drag-and-drop
-operations are performed with the Term- and Taxonomy-pages.  It may appear that the page has been relocated, 
-but the record will not be saved in the database.  Once the MODX manager is reloaded, the page will appear to 
-revert back to its original position. 
+**The GUI issues no warning when you drag a Term into a regular folder**
+
+Although the GUI appears to let you do this, the action is terminated on the backend.  Remember: A Term *must* be 
+a child of Taxonomy OR of another Term.  It may appear that the page has been relocated, but the record will not 
+be saved in the database.  Once the MODX manager is reloaded, the page will appear to revert back to its original 
+position. 
 
 
 

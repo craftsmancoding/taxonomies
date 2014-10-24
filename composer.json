@@ -1,6 +1,6 @@
 {
     "name": "craftsmancoding/taxonomies",
-    "description": "Bringing Taxonomies to MODX Revolution.",
+    "description": "Bringing Taxonomies to MODX Revolution: Categories, Tags, and more...",
     "type": "library",
     "keywords": ["modx", "taxonomies","categories","tags"], 
     "license": "GPL-2.0",
@@ -44,6 +44,7 @@
         "category":"Taxonomies",
         "core_path": "",
         "orm_path": "model/",
+        "omit": ["assets/","screenshots/","tests/","composer.json","composer.lock","builds/","phpunit.xml",".git"],
         "assets_path" : "assets/",
         "seeds_path": ["model/seeds/base"],
         "packages":[

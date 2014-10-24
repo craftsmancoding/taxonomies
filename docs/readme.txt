@@ -18,7 +18,7 @@ Installation
 
 Install this package via the MODX package manager.
 
-
+**This package REQUIRES PHP 5.3 or greater!!!**
 
 Advanced Installation (Developers Only)
 ---------------------------------
@@ -69,15 +69,19 @@ Terms may be nested, e.g. a "Mammal" term may have children "Dog" and "Cat".
 Known Problems
 --------------
 
-The GUI in the MODX resource tree is not easily customizable for the behavior this package needs, so there are
-regretfully some "warts" on the UI.  For example, if you right-click on the web context, the menu shows an item
-for "Create a New Term Here": but actually completing this action will fail because it is restricted on the 
-backend.  Some changes to the Ext JS in the core are required before this can be fully fixed.
+1. If you right-click on the web context, the menu displays the option to "Create Term Here"
 
-A Term *must* be a child of Taxonomy.  Some of the manager UI does not issue proper warnings when drag-and-drop
-operations are performed with the Term- and Taxonomy-pages.  It may appear that the page has been relocated, 
-but the record will not be saved in the database.  Once the MODX manager is reloaded, the page will appear to 
-revert back to its original position. 
+Ideally, the menu shouldn't print this as an option, but the GUI used in the MODX resource tree is not easily
+customizable (!@%$#!@ you Ext JS!).  So although that option appears in the menu, you are never allowed to complete
+that action: Terms must be the children of Taxonomies or other Terms. Some changes to the Ext JS in the core are
+required before this can be fully fixed.
+
+2. The GUI issues no warning when you drag a Term into a regular folder
+
+Although the GUI appears to let you do this, the action is terminated on the backend.  Remember: A Term *must* be
+a child of Taxonomy OR of another Term.  It may appear that the page has been relocated, but the record will not
+be saved in the database.  Once the MODX manager is reloaded, the page will appear to revert back to its original
+position.
 
 
 
