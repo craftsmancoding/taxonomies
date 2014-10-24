@@ -5,7 +5,7 @@ Bringing Taxonomies to MODX Revolution: add Categories or Tags to any MODX page.
 > Taxonomies are classifications like "Categories" or "Tags" that help you to organize pages on your site so they are easier to find in searches.  
 
 <a href="https://www.youtube.com/watch?v=CFidcBQDJ0Q&feature=youtu.be" target="_blank"><img src="http://img.youtube.com/vi/CFidcBQDJ0Q/0.jpg" 
-alt="Taxonomies Intro" width="240" height="180" border="10" /></a>
+alt="Taxonomies Intro" width="480" height="360" border="10" /></a>
 
 
 ### Taxonomy Terms vs. Template Variables
