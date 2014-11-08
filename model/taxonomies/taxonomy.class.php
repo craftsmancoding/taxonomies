@@ -38,6 +38,12 @@ class Taxonomy extends modResource {
         parent :: __construct($xpdo);
         $this->set('class_key','Taxonomy');
         $this->set('hide_children_in_tree',false);
+        // Easiest way I've found to override the sample template
+        if ($default_taxonomy_template = $this->xpdo->getOption('taxonomies.default_taxonomy_template'))
+        {
+            $this->xpdo->setOption('default_template',$default_taxonomy_template);
+        }
+
     }
     
     public static function getControllerPath(xPDO &$modx) {
@@ -99,8 +105,8 @@ class Taxonomy extends modResource {
         $idNote = $this->xpdo->hasPermission('tree_show_resource_ids') ? ' <span dir="ltr">('.$this->id.')</span>' : '';
 		
 		// System Default
-		$template_id = $this->getOption('taxonomies.default_taxonomy_template'); 
-		// Or, see if this Taxonomy sets its own default...
+		$template_id = $this->getOption('taxonomies.default_term_template');
+		// Or, see if this Taxonomy sets its own default... TODO: properties are not visible!!
 		$container = $this->xpdo->getObject('modResource', $this->id); 
 		if ($container) {
 			$props = $container->get('properties');

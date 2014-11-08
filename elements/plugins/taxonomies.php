@@ -54,14 +54,23 @@ switch ($modx->event->name) {
     //------------------------------------------------------------------------------
     case 'OnDocFormPrerender':
         $modx->log(modX::LOG_LEVEL_DEBUG,'Getting Test','taxonomies Plugin:OnDocFormPrerender');
-        $skip_classes = array('Taxonomy','Term');
+        $skip_classes = array_merge(
+            array('Taxonomy','Term'),
+            array_map('trim', explode(',', $modx->getOption('taxonomies.skip_class_keys')))
+        );
         if (empty($resource)) {
-            $class_key = (isset($_GET['class_key'])) ? $_GET['class_key'] : 'modDocument';            
+            $class_key = (isset($_GET['class_key'])) ? $_GET['class_key'] : 'modDocument';
+            $template = (isset($_GET['template'])) ? $_GET['template'] : $modx->getOption('default_template');
         } 
         else {
-            $class_key = $resource->get('class_key');    
+            $class_key = $resource->get('class_key');
+            $template = $resource->get('template');
         }
-
+        $skip_templates = array_map('trim', explode(',', $modx->getOption('taxonomies.skip_templates')));
+        if (in_array($template, $skip_templates))
+        {
+            return;
+        }
         if (!in_array($class_key,$skip_classes)) {
             $T = new \Taxonomies\Base($modx);
             $form = $T->getForm($id);

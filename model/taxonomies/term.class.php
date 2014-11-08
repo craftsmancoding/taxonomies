@@ -171,7 +171,7 @@ class Term extends modResource
         $idNote = $this->xpdo->hasPermission('tree_show_resource_ids') ? ' <span dir="ltr">(' . $this->id . ')</span>' : '';
 
         // System Default
-        $template_id = $this->getOption('taxonomies.default_taxonomy_template');
+        $template_id = $this->getOption('taxonomies.default_term_template');
         // Or, see if this Taxonomy node sets its own default...
         $container = $this->xpdo->getObject('modResource', $this->id);
         if ($container) {

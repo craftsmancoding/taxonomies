@@ -54,12 +54,13 @@ class Base
      *
      * See http://rtfm.modx.com/revolution/2.x/developing-in-modx/other-development-resources/class-reference/modx/modx.getchunk
      *
-     * @param array of arrays (a simple record set), or an array of objects (an xPDO Collection)
+     * @param array $records array of arrays (a simple record set), or an array of objects (an xPDO Collection)
      * @param string formatting $innerTpl formatting string OR chunk name
      * @param string formatting $outerTpl formatting string OR chunk name (optional)
+     * @param string $separator used to "glue" records together (e.g. comma-separated list)
      * @return string
      */
-    public function format($records, $innerTpl, $outerTpl = null)
+    public function format($records, $innerTpl, $outerTpl = null,$separator='')
     {
         if (empty($records)) {
             return '';
@@ -71,7 +72,7 @@ class Base
             $use_real_chunk = true;
         }
 
-        $out = '';
+        $out = array();
         foreach ($records as $r) {
             if (is_object($r)) {
                 $r = $this->flattenArray($r->toArray('', false, false, true)); // Handle xPDO objects
@@ -79,15 +80,16 @@ class Base
 
             // Pull up a real chunk
             if ($use_real_chunk) {
-                $out .= $this->modx->getChunk($innerTpl, $r);
+                $out[] = $this->modx->getChunk($innerTpl, $r);
             } // Use a temporary Chunk when dealing with raw formatting strings
             else {
                 $uniqid = uniqid();
                 $innerChunk = $this->modx->newObject('modChunk', array('name' => "{tmp-inner}-{$uniqid}"));
                 $innerChunk->setCacheable(false);
-                $out .= $innerChunk->process($r, $innerTpl);
+                $out[] = $innerChunk->process($r, $innerTpl);
             }
         }
+        $out = implode($separator, $out);
 
         if ($outerTpl) {
             $props = array('content' => $out);

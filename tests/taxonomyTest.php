@@ -47,7 +47,7 @@ class taxonomyTest extends \PHPUnit_Framework_TestCase
         self::_deleteTestResources();
     }
 
-        /**
+    /**
      * Prepare MODX for our tests.
      *
      * First we set up a folder structure like this, including a test taxonomy, a few terms, and some

@@ -13,5 +13,27 @@ return array(
 		'namespace' => 'taxonomies',
 		'area' => 'taxonomies:default'
     ),
+    array(
+        'key'  =>     'taxonomies.default_term_template',
+        'value'=>     '',
+        'xtype'=>     'textfield',
+        'namespace' => 'taxonomies',
+        'area' => 'taxonomies:default'
+    ),
+    array(
+        'key'  =>     'taxonomies.skip_templates',
+		'value'=>     '',
+		'xtype'=>     'textfield',
+		'namespace' => 'taxonomies',
+		'area' => 'taxonomies:default'
+    ),
+    array(
+        'key'  =>     'taxonomies.skip_class_keys',
+        'value'=>     '',
+        'xtype'=>     'textfield',
+        'namespace' => 'taxonomies',
+        'area' => 'taxonomies:default'
+    ),
+
 );
 /*EOF*/

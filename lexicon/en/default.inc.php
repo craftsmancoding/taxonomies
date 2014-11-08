@@ -47,3 +47,17 @@ $_lang['term_undelete'] = 'Undelete Term';
 $_lang['term_publish'] = 'Publish Term';
 $_lang['term_unpublish'] = 'Unpublish Term';
 $_lang['term_view'] = 'View Term';
+
+// Settings
+$_lang['setting_taxonomies.default_taxonomy_template'] = 'Default Taxonomy Template';
+$_lang['setting_taxonomies.default_taxonomy_template_desc'] = 'Which template should be used when creating a new Taxonomy?'
+    .'You can use this to reference a Template that contains getTagCloud or getResources or some other menu that will let users navigate the children Terms.';
+$_lang['setting_taxonomies.default_term_template'] = 'Default Term Template';
+$_lang['setting_taxonomies.default_term_template_desc'] = 'Which template should be used when creating a new Term?'
+    .'Your default Term Template is a great place for the getPagesByTerm Snippet.';
+$_lang['setting_taxonomies.skip_templates'] = 'Skip Templates';
+$_lang['setting_taxonomies.skip_templates_desc'] = 'Define whether the Taxonomies tab should NOT be visible when editing a page that uses one of a list of template ids (comma-separated).';
+$_lang['setting_taxonomies.skip_class_keys'] = 'Skip Class Keys';
+$_lang['setting_taxonomies.skip_class_keys_desc'] = 'You can refine which types of MODX resources will not display the Taxonomies Tab. '
+    .'Include a comma-separated list of class_key values, e.g. modDocument. '
+    .'The "Taxonomy" and "Term" classes will never show the Taxonomies Tab.';
