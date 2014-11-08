@@ -12,7 +12,8 @@
  * @param string $outerTpl Format the Outer Wrapper of List (Optional)
  * @param string $innerTpl Format the Inner Item of List
  * @param int $term_id (optional: defaults to the current page id)
- * @param string $classname (optional: default PageTerm)
+ * @param bool $exact_matches if true, implied hierarchies are ignored and only pages assigned specifically to term_id will be returned. Default: false
+ * @param string $classname Set this if you have created a custom join table used to associate taxonomy terms with something other than pages. (optional: default PageTerm)
  * @param boolean $debug (optional: if set, will output SQL query for debugging)
  *
  * @param int $limit Limit the result
@@ -37,6 +38,7 @@ $Snippet->log('getByTerm',$scriptProperties);
 $debug = $modx->getOption('debug', $scriptProperties);
 $classname = $modx->getOption('classname', $scriptProperties, 'PageTerm');
 $term_id = $modx->getOption('term_id', $scriptProperties, $modx->resource->get('id'));
+$exact_matches = $modx->getOption('exact_matches', $scriptProperties, false);
 $graph = $modx->getOption('graph', $scriptProperties, '{"Page":{}}');
 $outerTpl = $modx->getOption('outerTpl',$scriptProperties, '<ul>[[+content]]</ul>');
 $innerTpl = $modx->getOption('innerTpl',$scriptProperties, '<li><a href="[[~[[+Page.id]]]]">[[+Page.pagetitle]]</a></li>');
@@ -49,7 +51,7 @@ $filters = array();
 // Append children terms if present
 $properties = $parent->get('properties');
 //return print_r($properties,true);
-if (isset($properties['children_ids'])) {
+if (!$exact_matches && isset($properties['children_ids'])) {
     $children_ids = array_keys($properties['children_ids']);
     $children_ids[] = $term_id;
     $filters['term_id:IN'] = $children_ids;
