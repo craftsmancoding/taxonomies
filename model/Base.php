@@ -230,6 +230,41 @@ class Base
         return $this->buildForm($current_values);
     }
 
+    /**
+     * Get an HTML list of terms with links to edit them.
+     * URL format: /manager/?a=resource/update&id=____
+     * TODO: a view file please!  Some formatting that doesn't suck!
+     * @param $page_id
+     * @return string
+     */
+    public function getTermList($page_id)
+    {
+        $this->modx->lexicon->load('taxonomies:default');
+        $out = '<table><thead><tr>
+                <th><strong>'.$this->modx->lexicon('page').'</strong></th>
+                <th><strong>'.$this->modx->lexicon('alias').'</strong></th>
+            </tr></thead>';
+        $c = $this->modx->newQuery('PageTerm');
+        $c->where(array('PageTerm.term_id' => $page_id)); // yes, term_id is the current page
+        $c->sortby('Page.pagetitle','ASC');
+
+        if ($Terms = $this->modx->getCollectionGraph('PageTerm','{"Page":{}}',$c)) {
+            foreach ($Terms as $t) {
+                $out .= '<tr>
+                    <td><a href="'.MODX_MANAGER_URL.'?a=resource/update&id='.$t->get('page_id') .'">'.$t->Page->get('pagetitle').' ('.$t->get('page_id').')</a></td>
+                    <td>'.$t->Page->get('alias').'</td>
+                    </tr>';
+            }
+        }
+        else
+        {
+            return '<div>No pages have been assigned to this Term.</div>';
+        }
+
+        $out .'</table>';
+
+        return $out;
+    }
 
     /**
      * Dictate all page terms (array) for the given page_id (int)

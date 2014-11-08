@@ -54,6 +54,7 @@ switch ($modx->event->name) {
     //------------------------------------------------------------------------------
     case 'OnDocFormPrerender':
         $modx->log(modX::LOG_LEVEL_DEBUG,'Getting Test','taxonomies Plugin:OnDocFormPrerender');
+        $modx->lexicon->load('taxonomies:default');
         $skip_classes = array_merge(
             array('Taxonomy','Term'),
             array_map('trim', explode(',', $modx->getOption('taxonomies.skip_class_keys')))
@@ -77,12 +78,27 @@ switch ($modx->event->name) {
             $modx->regClientStartupHTMLBlock('<script type="text/javascript">
                 MODx.on("ready",function() {
                     MODx.addTab("modx-resource-tabs",{
-                        title: "Taxonomies",
+                        title: "'.$modx->lexicon('taxonomies').'",
                         id: "taxonomies-resource-tab",
                         width: "95%",
                         html: '.json_encode(utf8_encode("$form")).'
                     });
                 });                
+            </script>');
+        }
+        elseif($class_key=='Term')
+        {
+            $T = new \Taxonomies\Base($modx);
+            $pages = $T->getTermList($id);
+            $modx->regClientStartupHTMLBlock('<script type="text/javascript">
+                MODx.on("ready",function() {
+                    MODx.addTab("modx-resource-tabs",{
+                        title: "'.$modx->lexicon('pages').'",
+                        id: "pages-resource-tab",
+                        width: "95%",
+                        html: '.json_encode(utf8_encode("$pages")).'
+                    });
+                });
             </script>');
         }
         break;

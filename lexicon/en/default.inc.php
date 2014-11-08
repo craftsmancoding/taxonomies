@@ -28,6 +28,9 @@ $_lang['taxonomies_desc'] = 'Bringing Taxonomies to MODX Revolution';
 
 $_lang['taxonomy'] = 'Taxonomy';
 $_lang['taxonomies'] = 'Taxonomies';
+$_lang['pages'] = 'Pages';
+$_lang['page'] = 'Page';
+$_lang['alias'] = 'Alias';
 $_lang['taxonomy_create_here'] = 'Create a Taxonomy Here';
 $_lang['taxonomy_new'] = 'New Taxonomy';
 $_lang['taxonomy_duplicate'] = 'Duplicate Taxonomy';
