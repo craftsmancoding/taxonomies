@@ -68,10 +68,7 @@ switch ($modx->event->name) {
             $template = $resource->get('template');
         }
         $skip_templates = array_map('trim', explode(',', $modx->getOption('taxonomies.skip_templates')));
-        if (in_array($template, $skip_templates))
-        {
-            return;
-        }
+       
         if (!in_array($class_key,$skip_classes)) {
             $T = new \Taxonomies\Base($modx);
             $form = $T->getForm($id);
@@ -86,7 +83,8 @@ switch ($modx->event->name) {
                 });                
             </script>');
         }
-        elseif($class_key=='Term')
+        
+        if($class_key=='Term')
         {
             $T = new \Taxonomies\Base($modx);
             $pages = $T->getTermList($id);
@@ -100,6 +98,9 @@ switch ($modx->event->name) {
                     });
                 });
             </script>');
+        } elseif (in_array($template, $skip_templates))
+        {
+           return;
         }
         break;
         

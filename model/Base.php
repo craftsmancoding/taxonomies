@@ -240,7 +240,8 @@ class Base
     public function getTermList($page_id)
     {
         $this->modx->lexicon->load('taxonomies:default');
-        $out = '<table><thead><tr>
+        $out = '<div class="x-panel-body panel-desc x-panel-body-noheader x-panel-body-noborder"><p>Pages which use this Term.</p></div><br>';
+        $out .= '<table class="classy term-pages-tbl"><thead><tr>
                 <th><strong>'.$this->modx->lexicon('page').'</strong></th>
                 <th><strong>'.$this->modx->lexicon('alias').'</strong></th>
             </tr></thead>';

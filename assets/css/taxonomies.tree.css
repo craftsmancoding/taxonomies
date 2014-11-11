@@ -21,3 +21,7 @@
 	font-size: 11px;
 	display: inline !important;
 }
+
+.term-pages-tbl td {
+	padding: 10px 0px;
+}
