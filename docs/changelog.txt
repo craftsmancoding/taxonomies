@@ -8,3 +8,15 @@ Limitations: the feature set is somewhat utilitarian:
 
     * No sub-taxonomies.  A Taxonomy folder can contain Terms ONLY.
     * Drag and Drop interface in the MODX manager is not fully accurate.
+
+1.1.0
+---------------------------
+
+- Support for sub-taxonomies (e.g. hierarchical terms)
+- Support for hierarchical based searching.  E.g. searching for pages in the "Mammals" category returns pages in the "Dogs" category.
+
+1.2.0
+---------------------------
+
+- New tab for "Pages" added to the Term pages: now it's easy to see which pages have been associated with any given term.
+
