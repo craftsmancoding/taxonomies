@@ -34,6 +34,19 @@ return array(
         'namespace' => 'taxonomies',
         'area' => 'taxonomies:default'
     ),
-
+    array(
+        'key'  =>     'mgr_tree_icon_term',
+        'value'=>     'icon-term',
+        'xtype'=>     'textfield',
+        'namespace' => 'taxonomies',
+        'area' => 'taxonomies:default'
+    ),
+    array(
+        'key'  =>     'mgr_tree_icon_taxonomy',
+        'value'=>     'icon-taxonomy',
+        'xtype'=>     'textfield',
+        'namespace' => 'taxonomies',
+        'area' => 'taxonomies:default'
+    ),
 );
 /*EOF*/

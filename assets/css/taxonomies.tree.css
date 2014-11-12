@@ -1,8 +1,21 @@
-.icon-taxonomy .x-tree-node-icon {
+/* .icon-taxonomy {
     background-image: url(../images/taxonomy-icon.png) !important;
+} */
+
+.x-tree-node-collapsed .icon-taxonomy:before {
+content: "\f192" !important;
 }
-.icon-term .x-tree-node-icon {
-    background-image: url(../images/term-icon.png) !important;
+
+.x-tree-node .icon-taxonomy:before {
+content: "\f192" !important;
+}
+
+.x-tree-node .icon-term:before {
+content: "\f10c" !important;
+}
+
+.x-tree-node-collapsed .icon-term:before {
+content: "\f10c" !important;
 }
 
 #taxonomies-resource-tab fieldset {
