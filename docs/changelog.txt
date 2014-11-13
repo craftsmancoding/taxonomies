@@ -20,3 +20,6 @@ Limitations: the feature set is somewhat utilitarian:
 
 - New tab for "Pages" added to the Term pages: now it's easy to see which pages have been associated with any given term.
 
+1.2.1
+---------------------------
+- Custom icons added
