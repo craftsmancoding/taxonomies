@@ -43,6 +43,10 @@ $graph = $modx->getOption('graph', $scriptProperties, '{"Page":{}}');
 $outerTpl = $modx->getOption('outerTpl',$scriptProperties, '<ul>[[+content]]</ul>');
 $innerTpl = $modx->getOption('innerTpl',$scriptProperties, '<li><a href="[[~[[+Page.id]]]]">[[+Page.pagetitle]]</a></li>');
 
+$sort = $modx->getOption('sort', $scriptProperties,'pagetitle');
+$dir = $modx->getOption('dir', $scriptProperties,'ASC'); 
+
+
 if (!$parent = $modx->getObject('modResource', $term_id)) {
     return 'Invalid Term ID.';
 }
@@ -85,6 +89,8 @@ if ($debug) {
     <strong>innerTpl</strong> <code>'.$innerTpl.'</code><br/>
     ';
 }
+
+$c->sortby($sort,$dir);
 
 if ($Pages = $modx->getCollectionGraph($classname, $graph,$c)) {
     return $Snippet->format($Pages,$innerTpl,$outerTpl);
