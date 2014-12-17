@@ -54,6 +54,8 @@ $filters = array();
 
 // Append children terms if present
 $properties = $parent->get('properties');
+
+
 //return print_r($properties,true);
 if (!$exact_matches && isset($properties['children_ids'])) {
     $children_ids = array_keys($properties['children_ids']);
@@ -63,8 +65,10 @@ if (!$exact_matches && isset($properties['children_ids'])) {
 else {
     $filters['term_id'] = $term_id;
 }
+    
 
 $c = $modx->newQuery($classname);
+$c->groupby('page_id');
 
 if (isset($scriptProperties['class_key'])) {
     $filters['Page.class_key'] = $scriptProperties['class_key'];
@@ -93,6 +97,7 @@ if ($debug) {
 $c->sortby($sort,$dir);
 
 if ($Pages = $modx->getCollectionGraph($classname, $graph,$c)) {
+
     return $Snippet->format($Pages,$innerTpl,$outerTpl);
 }
 else {
