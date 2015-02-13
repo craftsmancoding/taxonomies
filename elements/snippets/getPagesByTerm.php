@@ -42,6 +42,7 @@ $exact_matches = $modx->getOption('exact_matches', $scriptProperties, false);
 $graph = $modx->getOption('graph', $scriptProperties, '{"Page":{}}');
 $outerTpl = $modx->getOption('outerTpl',$scriptProperties, '<ul>[[+content]]</ul>');
 $innerTpl = $modx->getOption('innerTpl',$scriptProperties, '<li><a href="[[~[[+Page.id]]]]">[[+Page.pagetitle]]</a></li>');
+$noResultTpl = $modx->getOption('noResultTpl',$scriptProperties, 'No Pages Found.');
 $limit = $modx->getOption('limit', $scriptProperties, null);
 
 $sort = $modx->getOption('sort', $scriptProperties,'pagetitle');
@@ -104,5 +105,20 @@ if ($Pages = $modx->getCollectionGraph($classname, $graph,$c)) {
     return $Snippet->format($Pages,$innerTpl,$outerTpl);
 }
 else {
-    return '<!-- getPagesByTerm no results -->';
+
+    $no_out = '';
+      if (!$modx->getObject('modChunk', array('name' => $noResultTpl))) {  
+            // Create the temporary chunk
+            $uniqid = uniqid();
+            $chunk = $modx->newObject('modChunk', array('name' => "{tmp}-{$uniqid}"));
+            $chunk->setCacheable(false);
+             
+            $no_out = $chunk->process(array(), $noResultTpl);
+        }
+        // Chunk Name
+        else {
+   
+            $no_out = $modx->getChunk($noResultTpl, array());
+        }
+        return $no_out;
 }
