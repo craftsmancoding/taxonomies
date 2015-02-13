@@ -42,6 +42,7 @@ $exact_matches = $modx->getOption('exact_matches', $scriptProperties, false);
 $graph = $modx->getOption('graph', $scriptProperties, '{"Page":{}}');
 $outerTpl = $modx->getOption('outerTpl',$scriptProperties, '<ul>[[+content]]</ul>');
 $innerTpl = $modx->getOption('innerTpl',$scriptProperties, '<li><a href="[[~[[+Page.id]]]]">[[+Page.pagetitle]]</a></li>');
+$limit = $modx->getOption('limit', $scriptProperties, null);
 
 $sort = $modx->getOption('sort', $scriptProperties,'pagetitle');
 $dir = $modx->getOption('dir', $scriptProperties,'ASC'); 
@@ -93,6 +94,8 @@ if ($debug) {
     <strong>innerTpl</strong> <code>'.$innerTpl.'</code><br/>
     ';
 }
+
+$c->limit($limit);
 
 $c->sortby($sort,$dir);
 
