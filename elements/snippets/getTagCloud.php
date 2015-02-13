@@ -33,6 +33,8 @@ $Snippet = new \Taxonomies\Base($modx);
 $Snippet->log('getTagCloud',$scriptProperties);
 
 $includeEmpty = $modx->getOption('includeEmpty',$scriptProperties, 0);
+$sortByCount = $modx->getOption('sortByCount',$scriptProperties, 0);
+$sortCountDir = $modx->getOption('sortCountDir',$scriptProperties, 'DESC');
 $outerTpl = $modx->getOption('outerTpl',$scriptProperties, '<ul>[[+content]]</ul>');
 $innerTpl = $modx->getOption('innerTpl',$scriptProperties, '<li><a href="[[~[[+id]]]]">[[+pagetitle]]</a> <strong>([[+count]])</strong></li>');
 
@@ -52,6 +54,10 @@ else
 		JOIN tax_page_terms terms ON terms.term_id = doc.id
 		WHERE doc.class_key='Term'
 		GROUP BY terms.term_id";
+}
+
+if($sortByCount) {
+	$sql.=" ORDER BY count $sortCountDir";
 }
 
 
