@@ -14,9 +14,11 @@
  * @param int $term_id (optional: defaults to the current page id)
  * @param bool $exact_matches if true, implied hierarchies are ignored and only pages assigned specifically to term_id will be returned. Default: false
  * @param string $classname Set this if you have created a custom join table used to associate taxonomy terms with something other than pages. (optional: default PageTerm)
- * @param boolean $debug (optional: if set, will output SQL query for debugging)
- *
+ * @param string $graph passed to getCollectionGraph, this controls the table joins.  Use this only if you need to query your own custom tables. Default: {"Page":{}}
+ * @param string $sort column. (default: pagetitle)
+ * @param string $dir sort direction (default: ASC)
  * @param int $limit Limit the result
+ * @param boolean $debug (optional: if set, will output SQL query for debugging)
  *
  * Variables
  * ---------
@@ -33,23 +35,26 @@
 $core_path = $modx->getOption('taxonomies.core_path', null, MODX_CORE_PATH.'components/taxonomies/');
 require_once $core_path .'vendor/autoload.php';
 $Snippet = new \Taxonomies\Base($modx);
-$Snippet->log('getByTerm',$scriptProperties);
+$Snippet->log('getPagesByTerm',$scriptProperties);
 
 $debug = $modx->getOption('debug', $scriptProperties);
 $classname = $modx->getOption('classname', $scriptProperties, 'PageTerm');
-$term_id = $modx->getOption('term_id', $scriptProperties, $modx->resource->get('id'));
+$term_id = $modx->getOption('term_id', $scriptProperties);
 $exact_matches = $modx->getOption('exact_matches', $scriptProperties, false);
 $graph = $modx->getOption('graph', $scriptProperties, '{"Page":{}}');
 $outerTpl = $modx->getOption('outerTpl',$scriptProperties, '<ul>[[+content]]</ul>');
 $innerTpl = $modx->getOption('innerTpl',$scriptProperties, '<li><a href="[[~[[+Page.id]]]]">[[+Page.pagetitle]]</a></li>');
-$noResultTpl = $modx->getOption('noResultTpl',$scriptProperties, 'No Pages Found.');
+$sort = $modx->getOption('sort', $scriptProperties,'pagetitle');
+$dir = $modx->getOption('dir', $scriptProperties,'ASC');
 $limit = $modx->getOption('limit', $scriptProperties, null);
 
-$sort = $modx->getOption('sort', $scriptProperties,'pagetitle');
-$dir = $modx->getOption('dir', $scriptProperties,'ASC'); 
+if (!$term_id && isset($modx->resource))
+{
+    $term_id = $modx->resource->get('id');
+}
 
-
-if (!$parent = $modx->getObject('modResource', $term_id)) {
+if (!$parent = $modx->getObject('modResource', $term_id))
+{
     return 'Invalid Term ID.';
 }
 $filters = array();
@@ -57,14 +62,14 @@ $filters = array();
 // Append children terms if present
 $properties = $parent->get('properties');
 
-
-//return print_r($properties,true);
-if (!$exact_matches && isset($properties['children_ids'])) {
+if (!$exact_matches && isset($properties['children_ids']))
+{
     $children_ids = array_keys($properties['children_ids']);
     $children_ids[] = $term_id;
     $filters['term_id:IN'] = $children_ids;
 }
-else {
+else
+{
     $filters['term_id'] = $term_id;
 }
     
@@ -72,12 +77,17 @@ else {
 $c = $modx->newQuery($classname);
 $c->groupby('page_id');
 
-if (isset($scriptProperties['class_key'])) {
+if (isset($scriptProperties['class_key']))
+{
     $filters['Page.class_key'] = $scriptProperties['class_key'];
 }
-$c->where($filters);
 
-if ($debug) {
+$c->where($filters);
+$c->limit($limit);
+$c->sortby($sort,$dir);
+
+if ($debug)
+{
     $c->bindGraph($graph);
     $c->prepare();
     $outerTpl = htmlspecialchars($outerTpl);
@@ -96,29 +106,10 @@ if ($debug) {
     ';
 }
 
-$c->limit($limit);
 
-$c->sortby($sort,$dir);
-
-if ($Pages = $modx->getCollectionGraph($classname, $graph,$c)) {
-
+if ($Pages = $modx->getCollectionGraph($classname, $graph,$c))
+{
     return $Snippet->format($Pages,$innerTpl,$outerTpl);
 }
-else {
 
-    $no_out = '';
-      if (!$modx->getObject('modChunk', array('name' => $noResultTpl))) {  
-            // Create the temporary chunk
-            $uniqid = uniqid();
-            $chunk = $modx->newObject('modChunk', array('name' => "{tmp}-{$uniqid}"));
-            $chunk->setCacheable(false);
-             
-            $no_out = $chunk->process(array(), $noResultTpl);
-        }
-        // Chunk Name
-        else {
-   
-            $no_out = $modx->getChunk($noResultTpl, array());
-        }
-        return $no_out;
-}
+return; // null
