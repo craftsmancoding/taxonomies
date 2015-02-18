@@ -19,6 +19,7 @@
  * @param string $dir sort direction (default: ASC)
  * @param int $limit Limit the result
  * @param boolean $debug (optional: if set, will output SQL query for debugging)
+ * @param string $placeholder Name of (optional) placeholder
  *
  * Variables
  * ---------
@@ -47,6 +48,7 @@ $innerTpl = $modx->getOption('innerTpl',$scriptProperties, '<li><a href="[[~[[+P
 $sort = $modx->getOption('sort', $scriptProperties,'pagetitle');
 $dir = $modx->getOption('dir', $scriptProperties,'ASC');
 $limit = $modx->getOption('limit', $scriptProperties, null);
+$placeholder = $modx->getOption('placeholder', $scriptProperties,false);
 
 if (!$term_id && isset($modx->resource))
 {
@@ -106,10 +108,17 @@ if ($debug)
     ';
 }
 
-
-if ($Pages = $modx->getCollectionGraph($classname, $graph,$c))
-{
-    return $Snippet->format($Pages,$innerTpl,$outerTpl);
+if ($Pages = $modx->getCollectionGraph($classname, $graph,$c)){
+    $s = $Snippet->format($Pages,$innerTpl,$outerTpl);
+	if($placeholder){
+        $modx->setPlaceholder($placeholder, $s);
+		return '';
+	} else {
+        return $s;
+	}
+} else {
+	if($placeholder){
+        $modx->setPlaceholder($placeholder, '');
+	}
+    return; // null
 }
-
-return; // null
