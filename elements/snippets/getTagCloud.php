@@ -40,6 +40,8 @@ $dir = $modx->getOption('dir',$scriptProperties, 'DESC');
 $outerTpl = $modx->getOption('outerTpl',$scriptProperties, '<ul>[[+content]]</ul>');
 $innerTpl = $modx->getOption('innerTpl',$scriptProperties, '<li><a href="[[~[[+id]]]]">[[+pagetitle]]</a> <strong>([[+count]])</strong></li>');
 
+$limit = $modx->getOption('limit',$scriptProperties, 0);
+
 $content_table = $modx->getTableName('modResource');
 $pageterms_table = $modx->getTableName('PageTerm');
 if($includeEmpty == 1)
@@ -62,7 +64,9 @@ else
 if($sort) {
 	$sql.=" ORDER BY $sort $dir";
 }
-
+if($limit) {
+	$sql.=" LIMIT $limit";
+}
 
 $obj = $modx->query($sql);
 $results = $obj->fetchAll(PDO::FETCH_ASSOC);
