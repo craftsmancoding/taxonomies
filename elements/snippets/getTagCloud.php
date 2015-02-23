@@ -10,12 +10,12 @@
  * 
  * Parameters
  * -----------------------------
- * @param string $outerTpl Format the Outer Wrapper of List (Optional)
- * @param string $innerTpl Format the Inner Item of List
- * @param string $sort column: pagetitle, id, count
- * @param string $dir ASC | DESC
- * @param int $limit Limit the result, default to 10 : setting it to 0 will show all
- * @param boolean $includeEmpty include all terms (disregard if it's assigned to certain page)
+ * @param textfield $outerTpl Format the Outer Wrapper of List (Optional)
+ * @param textfield $innerTpl Format the Inner Item of List
+ * @param textfield $sort column: pagetitle, id, count
+ * @param textfield $dir ASC | DESC default=DESC
+ * @param numberfield $limit Limit the result, default to 10 : setting it to 0 will show all
+ * @param combo-boolean $includeEmpty include all terms (disregard if it's assigned to certain page)
  *
  * Variables
  * ---------

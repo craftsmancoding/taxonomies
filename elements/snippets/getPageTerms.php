@@ -13,11 +13,11 @@
  * 
  * Parameters
  * -----------------------------
- * @param string $outerTpl Format the Outer Wrapper of List (Optional)
- * @param string $innerTpl Format the Inner Item of List
- * @param int $page_id get terms for this specific page
- * @param int $taxonomy_id limit terms to only this taxonomy
- * @param int $limit Limit the result, default to 10 : setting it to 0 will show all
+ * @param textfield $outerTpl Format the Outer Wrapper of List (Optional)
+ * @param textfield $innerTpl Format the Inner Item of List
+ * @param numberfield $page_id get terms for this specific page
+ * @param textfield $taxonomy_id limit terms to only this taxonomy
+ * @param numberfield $limit Limit the result, default to 10 : setting it to 0 will show all
  *
  * Variables
  * ---------
@@ -47,9 +47,10 @@ $limit = ($limit == 0) ? '' : 'LIMIT ' . $limit;
 $and_where = (is_null($taxonomy_id)) ? '' : 'AND doc.parent = ' . $taxonomy_id;
 $page_id = (is_null($page_id)) ? $modx->resource->get('id') : $page_id;
 
+$content_table = $modx->getTableName('modResource');
 $sql = "SELECT terms.term_id,doc.pagetitle
 		FROM tax_page_terms terms
-		LEFT JOIN modx_site_content doc ON doc.id = terms.term_id
+		LEFT JOIN  $content_table doc ON doc.id = terms.term_id
 		WHERE terms.page_id = {$page_id} {$and_where} ORDER BY terms.term_id ASC {$limit};";
 
 $obj = $modx->query($sql);

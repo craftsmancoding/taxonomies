@@ -9,16 +9,16 @@
  *
  * Parameters
  * -----------------------------
- * @param string $outerTpl Format the Outer Wrapper of List (Optional)
- * @param string $innerTpl Format the Inner Item of List
- * @param int $term_id (optional: defaults to the current page id)
- * @param bool $exact_matches if true, implied hierarchies are ignored and only pages assigned specifically to term_id will be returned. Default: false
- * @param string $classname Set this if you have created a custom join table used to associate taxonomy terms with something other than pages. (optional: default PageTerm)
- * @param string $graph passed to getCollectionGraph, this controls the table joins.  Use this only if you need to query your own custom tables. Default: {"Page":{}}
- * @param string $sort column. (default: pagetitle)
- * @param string $dir sort direction (default: ASC)
- * @param int $limit Limit the result
- * @param boolean $debug (optional: if set, will output SQL query for debugging)
+ * @param textfield $outerTpl Format the Outer Wrapper of List (Optional)
+ * @param textfield $innerTpl Format the Inner Item of List
+ * @param numberfield $term_id (optional: defaults to the current page id)
+ * @param combo-boolean $exact_matches if true, implied hierarchies are ignored and only pages assigned specifically to term_id will be returned. default=false
+ * @param textfield $classname Set this if you have created a custom join table used to associate taxonomy terms with something other than pages. default=PageTerm
+ * @param textfield $graph passed to getCollectionGraph, this controls the table joins.  Use this only if you need to query your own custom tables. Default={"Page":{}}
+ * @param textfield $sort column. default=pagetitle
+ * @param textfield $dir sort direction default=ASC
+ * @param numberfield $limit Limit the result
+ * @param combo-boolean $debug if set, will output SQL query for debugging
  *
  * Variables
  * ---------
