@@ -33,7 +33,7 @@
             "model/"
         ],
         "psr-4": {
-            "Taxonomies\\": "model/"
+            "Taxonomies\\": ["model/","controllers/"]
         }
     },    
     "extra": {
