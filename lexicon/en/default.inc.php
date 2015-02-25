@@ -64,3 +64,12 @@ $_lang['setting_taxonomies.skip_class_keys'] = 'Skip Class Keys';
 $_lang['setting_taxonomies.skip_class_keys_desc'] = 'You can refine which types of MODX resources will not display the Taxonomies Tab. '
     .'Include a comma-separated list of class_key values, e.g. modDocument. '
     .'The "Taxonomy" and "Term" classes will never show the Taxonomies Tab.';
+
+
+    //---------------------------------------
+// CM Pages Menu
+//---------------------------------------
+$_lang['taxonomies.menu.donation'] = 'Make a Donation';
+$_lang['taxonomies.menu.bug'] = 'Report a Bug';
+$_lang['taxonomies.menu.wiki'] = 'Wiki';
+$_lang['taxonomies.menu.support'] = 'Get Paid Support';

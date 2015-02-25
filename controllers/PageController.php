@@ -31,7 +31,7 @@ class PageController extends BaseController {
         $this->config['assets_url'] = $this->modx->getOption('taxonomies.assets_url', null, MODX_ASSETS_URL.'components/taxonomies/');
         
 
-       // $this->modx->regClientCSS($this->config['assets_url'] . 'css/taxonomies.css');
+        $this->modx->regClientCSS($this->config['assets_url'] . 'css/taxonomies.css');
        // $this->modx->regClientStartupScript($this->config['assets_url'].'js/taxonomies.js');
 
 
