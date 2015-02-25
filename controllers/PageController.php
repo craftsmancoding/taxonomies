@@ -32,7 +32,13 @@ class PageController extends BaseController {
         
 
         $this->modx->regClientCSS($this->config['assets_url'] . 'css/taxonomies.css');
-       // $this->modx->regClientStartupScript($this->config['assets_url'].'js/taxonomies.js');
+
+        
+        $this->modx->regClientCSS($this->config['assets_url'] . 'css/bootstrap.css'); 
+
+        $this->modx->regClientStartupScript($this->config['assets_url'] . 'js/jquery.min.js');
+        $this->modx->regClientStartupScript($this->config['assets_url'] . 'js/bootstrap.js');
+        $this->modx->regClientStartupScript($this->config['assets_url'].'js/taxonomies.js');
 
 
     }

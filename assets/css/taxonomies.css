@@ -123,6 +123,7 @@ h2.taxonomies_cmp_heading {
   font-size: 14px;
   text-shadow: none !important;
   cursor: pointer !important;
+  display: inline-block;
 }
 
 a.taxonomies-btn-orange {
