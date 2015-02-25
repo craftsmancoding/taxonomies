@@ -35,9 +35,13 @@ class PageController extends BaseController {
 
         
         $this->modx->regClientCSS($this->config['assets_url'] . 'css/bootstrap.css'); 
+         $this->modx->regClientCSS('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.css'); 
+
+
 
         $this->modx->regClientStartupScript($this->config['assets_url'] . 'js/jquery.min.js');
         $this->modx->regClientStartupScript($this->config['assets_url'] . 'js/bootstrap.js');
+        $this->modx->regClientStartupScript($this->config['assets_url'] . 'js/handlebars-v2.0.0.js');
         $this->modx->regClientStartupScript($this->config['assets_url'].'js/taxonomies.js');
 
 
