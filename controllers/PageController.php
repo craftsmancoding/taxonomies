@@ -62,7 +62,7 @@ class PageController extends BaseController {
             <script type="text/javascript">
                  var taxonomies = '.json_encode($connectors).';
             </script>');
-
+        $this->setPlaceholder('loader', $this->config['assets_url'] . 'images/ajax-loader.GIF');
         return $this->fetchTemplate('main/index.php');
     }
 
@@ -81,11 +81,11 @@ class PageController extends BaseController {
         // there's already getPageTerms function on model\Base.php
         // which will pull all terms
         $terms = array(
-            1 => array('Term test From getTerms 1.1','Term test From getTerms 1.2'),
-            2 => array('Term test From getTerms 2.1','Term test From getTerms 2.2'),
-            3 => array('Term test From getTerms 3.1','Term test From getTerms 3.2'),
-            4 => array('Term test From getTerms 4.1','Term test From getTerms 4.2'),
-            5 => array('Term test From getTerms 5.1','Term test From getTerms 5.2')
+            1 => array(array('id'=>1,'pagetitle'=>'Term test From getTerms 1.1'),array('id'=>2,'pagetitle'=>'Term test From getTerms 1.2')),
+            2 => array(array('id'=>1,'pagetitle'=>'Term test From getTerms 2.1'),array('id'=>2,'pagetitle'=>'Term test From getTerms 2.2')),
+            3 => array(array('id'=>1,'pagetitle'=>'Term test From getTerms 3.1'),array('id'=>2,'pagetitle'=>'Term test From getTerms 3.2')),
+            4 => array(array('id'=>1,'pagetitle'=>'Term test From getTerms 4.1'),array('id'=>2,'pagetitle'=>'Term test From getTerms 4.2')),
+            5 => array(array('id'=>1,'pagetitle'=>'Term test From getTerms 5.1'),array('id'=>2,'pagetitle'=>'Term test From getTerms 5.2'))
         );
         $id = $this->modx->getOption('page_id',$scriptProperties);
         return json_encode($terms[$id]); // this is just atest data

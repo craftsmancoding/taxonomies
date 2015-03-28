@@ -27,16 +27,22 @@ function add_term(event) {
 
 /**
  * get_terms
- *
+ * get all child pages of the give page_id
  */
 function get_terms(obj,event)
 {
+    jQuery('#ajax-loader').show();
     var page_id = jQuery(obj).val();
     $.ajax({
         type: "GET",
         url: taxonomies.connector_url+'&method=terms&page_id='+page_id,
         success: function(response) {
-            console.log(response);
+            response = jQuery.parseJSON(response);
+            jQuery.each( response, function( key, value ) {
+                var row_term_tpl = Handlebars.compile(jQuery('#row_term_tpl').html());
+                jQuery('#terms-container').append(row_term_tpl(value));
+            });
+            jQuery('#ajax-loader').hide();
         }
     });
     event.preventDefault();

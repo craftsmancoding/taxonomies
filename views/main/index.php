@@ -6,6 +6,12 @@
 	</div>
 </script>
 
+<script id="row_term_tpl" type="text/x-handlebars-template">
+    <tr>
+        <td colspan="2"><a href="#">{{pagetitle}}</a><a href="#" class="taxonomies-btn taxonomies-btn-info taxonomies-btn-mini pull-right">Add</a></td>
+    </tr>
+</script>
+
 <div class="taxonomies_canvas_inner">
 	<h2 class="taxonomies_cmp_heading" id="taxonomies_pagetitle">Welcome to Taxonomies Dashboard</h2>
 </div>
@@ -36,6 +42,18 @@
                       <option value="4">Taxonomy 4</option>
                       <option value="5">Taxonomy 5</option>
                   </select>
+                    <div class="clear">&nbsp;</div>
+                  <table class="tax-classy">
+                      <thead>
+                      <tr>
+                          <th colspan="2">Child Terms</th>
+                      </tr>
+                      </thead>
+                      <tbody id="terms-container">
+
+                      </tbody>
+                  </table>
+
               </div>
           </div><!--e.tax-col4-->
         <div class="tax-col6">
@@ -43,11 +61,13 @@
                 <p class="tax-description">Press "ENTER" after typing the term...</p>
                 <input type="text" name="term-entry" id="term-entry" placeholder="Type Term to be added..." >
                 <button class="taxonomies-btn taxonomies-btn-info taxonomies-btn-mini" onclick="javascript:add_term(event);" >Add</button>
+
             </div>
         </div><!--e.tax-col6-->
 
       </div>
       <div class="modal-footer">
+          <img id="ajax-loader" src="<?php print $data['loader'];  ?>" alt=""/>&nbsp;
         <button type="button" class="taxonomies-btn taxonomies-btn-default" data-dismiss="modal">Close</button>
         <button type="button" class="taxonomies-btn taxonomies-btn-primary">Save changes</button>
       </div>
