@@ -56,7 +56,39 @@ class PageController extends BaseController {
      */
     public function getIndex(array $scriptProperties = array()) {
         $this->modx->log(\modX::LOG_LEVEL_INFO, print_r($scriptProperties,true),'','Taxonomies PageController:'.__FUNCTION__);
+        $Model = new Base($this->modx);
+        $connectors['connector_url'] = utf8_encode($Model->getControllerUrl());
+        $this->addHtml('
+            <script type="text/javascript">
+                 var taxonomies = '.json_encode($connectors).';
+            </script>');
+
         return $this->fetchTemplate('main/index.php');
+    }
+
+    /**
+     *
+     * getTerms
+     *
+     * @param array $scriptProperties
+     * @return json
+     */
+    public function getTerms(array $scriptProperties = array()) {
+        $this->loadHeader = false;
+        $this->loadFooter = false;
+        // GFD... this can't be set at runtime. See improvised addStandardLayout() function
+        $this->loadBaseJavascript = false;
+        // there's already getPageTerms function on model\Base.php
+        // which will pull all terms
+        $terms = array(
+            1 => array('Term test From getTerms 1.1','Term test From getTerms 1.2'),
+            2 => array('Term test From getTerms 2.1','Term test From getTerms 2.2'),
+            3 => array('Term test From getTerms 3.1','Term test From getTerms 3.2'),
+            4 => array('Term test From getTerms 4.1','Term test From getTerms 4.2'),
+            5 => array('Term test From getTerms 5.1','Term test From getTerms 5.2')
+        );
+        $id = $this->modx->getOption('page_id',$scriptProperties);
+        return json_encode($terms[$id]); // this is just atest data
     }
 
 

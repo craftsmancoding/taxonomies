@@ -313,4 +313,26 @@ class Base
         }
         return $result;
     }
+
+    /**
+     * Gotta look up the URL of our CMP and its actions
+     *
+     * @param array any optional arguments, e.g. array('action'=>'children','parent'=>123)
+     * @return string
+     */
+    public function getControllerUrl($args=array()) {
+        // future: pass as args:
+        $namespace='taxonomies';
+        $controller='index';
+        $url = MODX_MANAGER_URL;
+        if ($Action = $this->modx->getObject('modAction', array('namespace'=>$namespace,'controller'=>$controller))) {
+            $url .= '?a='.$Action->get('id');
+            if ($args) {
+                foreach ($args as $k=>$v) {
+                    $url.='&'.$k.'='.$v;
+                }
+            }
+        }
+        return $url;
+    }
 }

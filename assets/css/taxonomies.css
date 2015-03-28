@@ -126,7 +126,7 @@ h2.taxonomies_cmp_heading {
   display: inline-block;
 }
 
-a.taxonomies-btn-orange {
+.taxonomies-btn-orange {
   background: #F86C05 !important;
   color: #fff !important;
   border: 1px solid #F86C05 !important;
@@ -386,7 +386,7 @@ padding: 10px;
 }
 
 #term-entry {
-  width: 97%;
+  width: 76%;
 padding: 1%;
 border: 1px solid #E9E9E9;
 margin-bottom: 10px;
@@ -401,6 +401,7 @@ margin-bottom: 10px;
   padding: 2px 10px;
   display: inline-block;
 }
+
 
 .term-item a {
   color: #fff !important;
@@ -417,7 +418,23 @@ margin-bottom: 10px;
   font-style: italic;
 }
 
+.tax-col4
+{
+    width:40%;
+    float: left;
+}
+.tax-col6
+{
+    width:60%;
+    float: right;
+}
+.taxonomies-select {
+    margin-right:15px;
+}
 
+#taxonomies-select-input {
+    width: 100%;
+}
 /* The Magnificent Clearfix: Updated to prevent margin-collapsing on child elements.
    j.mp/bestclearfix */
 .clear:before, .clear:after,
