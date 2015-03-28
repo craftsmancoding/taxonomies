@@ -58,10 +58,14 @@ function get_terms(obj,event)
         success: function(response) {
             response = jQuery.parseJSON(response);
             jQuery('#terms-container').empty();
-            jQuery.each( response, function( key, value ) {
-                var row_term_tpl = Handlebars.compile(jQuery('#row_term_tpl').html());
-                jQuery('#terms-container').append(row_term_tpl(value));
-            });
+            if(response != null)
+            {
+                jQuery.each( response, function( key, value ) {
+                    var row_term_tpl = Handlebars.compile(jQuery('#row_term_tpl').html());
+                    jQuery('#terms-container').append(row_term_tpl(value));
+                });
+            }
+
             jQuery('#ajax-loader').hide();
         }
     });
