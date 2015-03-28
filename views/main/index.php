@@ -7,8 +7,9 @@
 </script>
 
 <script id="row_term_tpl" type="text/x-handlebars-template">
-    <tr>
-        <td colspan="2"><a href="#">{{pagetitle}}</a><a href="#" class="taxonomies-btn taxonomies-btn-info taxonomies-btn-mini pull-right">Add</a></td>
+    <tr data-row_term_name="{{pagetitle}}">
+        <td><a href="#">{{pagetitle}}</a></td>
+        <td><a onclick="javascript:add_term(this,event);" data-term_name="{{pagetitle}}" href="#" class="taxonomies-btn taxonomies-btn-info taxonomies-btn-mini pull-right">Add</a></td>
     </tr>
 </script>
 
@@ -20,8 +21,31 @@
 	<p>More features coming soon...</p>
 </div>
 <br>
-<a href="#" class="taxonomies-btn taxonomies-btn-primary" data-toggle="modal" data-target="#quick-add-terms" >Quick Add Terms</a>
 
+<table class="tax-classy tax-classy-alt">
+    <thead>
+    <tr>
+        <th>Id</th>
+        <th>Taxonomy</th>
+        <th>Alias</th>
+        <th>&nbsp</th>
+    </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>1</td>
+            <td>Test Taxonomy</td>
+            <td>/test-taxonomy</td>
+            <td><a href="#" class="taxonomies-btn taxonomies-btn-primary taxonomies-btn-mini " data-toggle="modal" data-target="#quick-add-terms" >Quick Add Terms</a></td>
+        </tr>
+        <tr>
+            <td>2</td>
+            <td>Test Taxonomy 2</td>
+            <td>/test-taxonomy 2</td>
+            <td><a href="#" class="taxonomies-btn taxonomies-btn-primary taxonomies-btn-mini " data-toggle="modal" data-target="#quick-add-terms" >Quick Add Terms</a></td>
+        </tr>
+    </tbody>
+</table>
 
 <!-- Modal -->
 <div class="modal fade" id="quick-add-terms" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -36,6 +60,7 @@
               <div class="taxonomies-select">
                   <p class="tax-description">Select taxonomy to add its Direct Child Terms...</p>
                   <select onchange="javascript:get_terms(this,event);" name="taxonomy_id" id="taxonomies-select-input">
+                      <option value="">Please Select...</option>
                       <option value="1">Taxonomy 1</option>
                       <option value="2">Taxonomy 2</option>
                       <option value="3">Taxonomy 3</option>
@@ -46,7 +71,8 @@
                   <table class="tax-classy">
                       <thead>
                       <tr>
-                          <th colspan="2">Child Terms</th>
+                          <th>Child Terms</th>
+                          <th><a href="#" class="taxonomies-btn taxonomies-btn-mini taxonomies-btn-default" onclick="javascript:add_all_terms(event);">Add All </a></th>
                       </tr>
                       </thead>
                       <tbody id="terms-container">
@@ -60,7 +86,7 @@
             <div class="terms-wrap">
                 <p class="tax-description">Press "ENTER" after typing the term...</p>
                 <input type="text" name="term-entry" id="term-entry" placeholder="Type Term to be added..." >
-                <button class="taxonomies-btn taxonomies-btn-info taxonomies-btn-mini" onclick="javascript:add_term(event);" >Add</button>
+                <button class="taxonomies-btn taxonomies-btn-info taxonomies-btn-mini" onclick="javascript:add_term(this,event);" >Add</button>
 
             </div>
         </div><!--e.tax-col6-->

@@ -218,8 +218,13 @@ table thead a:hover {
     text-decoration: underline;
 }
 
-tr:nth-child(even) {background: #f5f6f9}
-tr:nth-child(odd) {background: #fff}
+table.tax-classy-alt  td
+{
+    border: none;
+}
+
+.tax-classy-alt tr:nth-child(even) {background: #f5f6f9}
+.tax-classy-alt tr:nth-child(odd) {background: #fff}
 
 
 

@@ -14,15 +14,34 @@ function remove_me(event,parent) {
 /**
  * add_term
  */
-function add_term(event) {
-    console.log('test');
-    var term_name = jQuery('#term-entry').val();
+function add_term(obj,event) {
+    var term_name = jQuery(obj).prev().val() != undefined ? jQuery('#term-entry').val() : jQuery(obj).data('term_name');
+    console.log(term_name);
     if( term_name !== '' )
     {
         var term_tpl = Handlebars.compile(jQuery('#term_tpl').html());
         jQuery('.terms-wrap').append(term_tpl({"name":term_name}));
     }
     event.preventDefault()
+}
+
+/**
+ * add all terms
+ * get data row_term_name attr of table tbody#terms-container
+ * @param event
+ */
+function add_all_terms(event) {
+    console.log('[Adding all terms]');
+    var term_tpl = Handlebars.compile(jQuery('#term_tpl').html());
+    var terms = jQuery("#terms-container tr");
+    if(terms.length !== 0)
+    {
+        terms.each(function() {
+            jQuery('.terms-wrap').append(term_tpl({"name":jQuery(this).data('row_term_name')}));
+        });
+    }
+
+    event.preventDefault();
 }
 
 /**
@@ -38,6 +57,7 @@ function get_terms(obj,event)
         url: taxonomies.connector_url+'&method=terms&page_id='+page_id,
         success: function(response) {
             response = jQuery.parseJSON(response);
+            jQuery('#terms-container').empty();
             jQuery.each( response, function( key, value ) {
                 var row_term_tpl = Handlebars.compile(jQuery('#row_term_tpl').html());
                 jQuery('#terms-container').append(row_term_tpl(value));
