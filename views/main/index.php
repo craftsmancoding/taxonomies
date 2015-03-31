@@ -8,7 +8,7 @@
 
 <script id="row_term_tpl" type="text/x-handlebars-template">
     <tr data-row_term_name="{{pagetitle}}">
-        <td><a href="#">{{pagetitle}}</a></td>
+        <td><a onclick="javascript:get_terms(this,event);" data-id="{{id}}" href="#">{{pagetitle}}</a></td>
         <td><a onclick="javascript:add_term(this,event);" data-term_name="{{pagetitle}}" href="#" class="taxonomies-btn taxonomies-btn-info taxonomies-btn-mini pull-right">Add</a></td>
     </tr>
 </script>
@@ -90,6 +90,7 @@
 
             </div>
         </div><!--e.tax-col6-->
+          <div class="clear">&nbsp;</div>
           <div id="taxonomies-bc"></div>
 
       </div>

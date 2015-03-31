@@ -343,7 +343,13 @@ table.tax-classy-alt  td
   cursor: default;
 }
 
+#taxonomies-bc {
+    font-size: 11px;
+}
 
+#taxonomies-bc a {
+    color: #556C88;
+}
 #taxonomies-pagination {
   margin: 15px 0px;
 }

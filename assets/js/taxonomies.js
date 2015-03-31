@@ -73,7 +73,8 @@ function add_all_terms(event) {
 function get_terms(obj,event)
 {
     jQuery('#ajax-loader').show();
-    var page_id = jQuery(obj).val();
+    var page_id = jQuery(obj).val() == '' ? jQuery(obj).data('id') : jQuery(obj).val();
+    console.log(page_id);
     setBreadcrumbs(page_id);
     $.ajax({
         type: "GET",
