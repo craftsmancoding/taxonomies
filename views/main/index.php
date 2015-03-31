@@ -32,18 +32,16 @@
     </tr>
     </thead>
     <tbody>
-        <tr>
-            <td>1</td>
-            <td>Test Taxonomy</td>
-            <td>/test-taxonomy</td>
-            <td><a href="#" class="taxonomies-btn taxonomies-btn-primary taxonomies-btn-mini " data-toggle="modal" data-target="#quick-add-terms" >Quick Add Terms</a></td>
-        </tr>
-        <tr>
-            <td>2</td>
-            <td>Test Taxonomy 2</td>
-            <td>/test-taxonomy 2</td>
-            <td><a href="#" class="taxonomies-btn taxonomies-btn-primary taxonomies-btn-mini " data-toggle="modal" data-target="#quick-add-terms" >Quick Add Terms</a></td>
-        </tr>
+        <?php if($data['taxonomies']) : ?>
+            <?php foreach($data['taxonomies'] as $t) : ?>
+            <tr>
+                <td><?php print $t->get('id'); ?></td>
+                <td><?php print $t->get('pagetitle'); ?></td>
+                <td><?php print $t->get('alias'); ?></td>
+                <td><a href="#" class="taxonomies-btn taxonomies-btn-primary taxonomies-btn-mini " data-toggle="modal" data-target="#quick-add-terms" >Quick Add Terms</a></td>
+            </tr>
+            <?php endforeach; ?>
+        <?php endif; ?>
     </tbody>
 </table>
 
@@ -61,11 +59,13 @@
                   <p class="tax-description">Select taxonomy to add its Direct Child Terms...</p>
                   <select onchange="javascript:get_terms(this,event);" name="taxonomy_id" id="taxonomies-select-input">
                       <option value="">Please Select...</option>
-                      <option value="1">Taxonomy 1</option>
-                      <option value="2">Taxonomy 2</option>
-                      <option value="3">Taxonomy 3</option>
-                      <option value="4">Taxonomy 4</option>
-                      <option value="5">Taxonomy 5</option>
+                      <?php if($data['taxonomies']) : ?>
+                          <?php foreach($data['taxonomies'] as $t) : ?>
+                              <tr>
+                                  <option value="<?php print $t->get('id'); ?>"><?php print $t->get('pagetitle'); ?></option>
+                              </tr>
+                          <?php endforeach; ?>
+                      <?php endif; ?>
                   </select>
                     <div class="clear">&nbsp;</div>
                   <table class="tax-classy">
@@ -90,6 +90,7 @@
 
             </div>
         </div><!--e.tax-col6-->
+          <div id="taxonomies-bc"></div>
 
       </div>
       <div class="modal-footer">

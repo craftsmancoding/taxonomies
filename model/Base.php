@@ -142,6 +142,43 @@ class Base
     }
 
     /**
+     *  get all taxonomies
+     *
+     * @return mixed
+     */
+    public function getTaxonomies()
+    {
+        $c = $this->modx->newQuery('Taxonomy');
+        $c->select('id,pagetitle,alias');
+        $c->where(array('published' => true, 'class_key' => 'Taxonomy'));
+        $c->sortby('menuindex', 'ASC');
+        return $this->modx->getCollection('Taxonomy', $c);
+    }
+
+    /**
+     *  get all immediate child terms
+     * @param int $parent
+     * @return mixed
+     */
+    public function getTerms($parent)
+    {
+        $terms = array();
+        $c = $this->modx->newQuery('Term');
+        $c->where(array('published' => true, 'class_key' => 'Term', 'parent' => $parent));
+        $c->sortby('menuindex', 'ASC');
+        if ($Ts = $this->modx->getCollection('Term', $c))
+        {
+            foreach ($Ts as $t) {
+                $terms[]= array(
+                    'id'=>$t->get('id'),
+                    'pagetitle' => $t->get('pagetitle')
+                );
+            }
+        }
+        return $terms;
+    }
+
+    /**
      * @param array $current_values
      * @return string
      */

@@ -21,7 +21,7 @@ class PageController extends BaseController {
     public $loadBaseJavascript = true; 
     // Stuff needed for interfacing with Assman API (mapi)
     public $client_config = array();
-    
+    public $tax;
     function __construct(\modX &$modx,$config = array()) {
         parent::__construct($modx,$config);
         static::$x =& $modx;
@@ -29,13 +29,9 @@ class PageController extends BaseController {
         $this->config['controller_url'] = self::url();
         $this->config['core_path'] = $this->modx->getOption('taxonomies.core_path', null, MODX_CORE_PATH.'components/taxonomies/');
         $this->config['assets_url'] = $this->modx->getOption('taxonomies.assets_url', null, MODX_ASSETS_URL.'components/taxonomies/');
-        
-
         $this->modx->regClientCSS($this->config['assets_url'] . 'css/taxonomies.css');
-
-        
         $this->modx->regClientCSS($this->config['assets_url'] . 'css/bootstrap.css'); 
-         $this->modx->regClientCSS('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.css'); 
+        $this->modx->regClientCSS('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.css');
 
 
 
@@ -43,8 +39,49 @@ class PageController extends BaseController {
         $this->modx->regClientStartupScript($this->config['assets_url'] . 'js/bootstrap.js');
         $this->modx->regClientStartupScript($this->config['assets_url'] . 'js/handlebars-v2.0.0.js');
         $this->modx->regClientStartupScript($this->config['assets_url'].'js/taxonomies.js');
+        $this->tax = new Base($this->modx);
+
+    }
+
+    /**
+     * getBreadcrumbs
+     * @param array $scriptProperties
+     * @return html markup
+     */
+    public function getBreadcrumbs(array $scriptProperties = array()) {
+        $this->loadHeader = false;
+        $this->loadFooter = false;
+        // GFD... this can't be set at runtime. See improvised addStandardLayout() function
+        $this->loadBaseJavascript = false;
+
+        $items = $this->getBcRecords($scriptProperties);
+        $items = json_decode($items,true);
+        $last = array_pop($items);
 
 
+        $this->setPlaceholder('links', $items);
+        $this->setPlaceholder('last', $last['pagetitle']);
+        return $this->fetchTemplate('main/breadcrumbs.php');
+    }
+
+    public function getBcRecords(array $scriptProperties = array()) {
+        $this->loadHeader = false;
+        $this->loadFooter = false;
+        // GFD... this can't be set at runtime. See improvised addStandardLayout() function
+        $this->loadBaseJavascript = false;
+
+        $page_id = $this->modx->getOption('page_id',$scriptProperties);
+        $items = array();
+        while ($page = $this->modx->getObject('modResource', $page_id)) {
+            array_unshift($items, array(
+                    'id' => $page->get('id'),
+                    'pagetitle' => $page->get('pagetitle')
+                )
+            );
+            $page_id = $page->get('parent');
+        }
+
+        return json_encode($items);
     }
 
     
@@ -56,13 +93,14 @@ class PageController extends BaseController {
      */
     public function getIndex(array $scriptProperties = array()) {
         $this->modx->log(\modX::LOG_LEVEL_INFO, print_r($scriptProperties,true),'','Taxonomies PageController:'.__FUNCTION__);
-        $Model = new Base($this->modx);
-        $connectors['connector_url'] = utf8_encode($Model->getControllerUrl());
+
+        $connectors['connector_url'] = utf8_encode($this->tax->getControllerUrl());
         $this->addHtml('
             <script type="text/javascript">
                  var taxonomies = '.json_encode($connectors).';
             </script>');
         $this->setPlaceholder('loader', $this->config['assets_url'] . 'images/ajax-loader.GIF');
+        $this->setPlaceholder('taxonomies',$this->tax->getTaxonomies());
         return $this->fetchTemplate('main/index.php');
     }
 
@@ -78,17 +116,9 @@ class PageController extends BaseController {
         $this->loadFooter = false;
         // GFD... this can't be set at runtime. See improvised addStandardLayout() function
         $this->loadBaseJavascript = false;
-        // there's already getPageTerms function on model\Base.php
-        // which will pull all terms
-        $terms = array(
-            1 => array(array('id'=>1,'pagetitle'=>'Term test From getTerms 1.1'),array('id'=>2,'pagetitle'=>'Term test From getTerms 1.2')),
-            2 => array(array('id'=>1,'pagetitle'=>'Term test From getTerms 2.1'),array('id'=>2,'pagetitle'=>'Term test From getTerms 2.2')),
-            3 => array(array('id'=>1,'pagetitle'=>'Term test From getTerms 3.1'),array('id'=>2,'pagetitle'=>'Term test From getTerms 3.2')),
-            4 => array(array('id'=>1,'pagetitle'=>'Term test From getTerms 4.1'),array('id'=>2,'pagetitle'=>'Term test From getTerms 4.2')),
-            5 => array(array('id'=>1,'pagetitle'=>'Term test From getTerms 5.1'),array('id'=>2,'pagetitle'=>'Term test From getTerms 5.2'))
-        );
         $id = $this->modx->getOption('page_id',$scriptProperties);
-        return json_encode($terms[$id]); // this is just atest data
+        $terms =  $this->tax->getTerms($id);
+        return json_encode($terms);
     }
 
 

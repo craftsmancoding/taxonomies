@@ -1,3 +1,26 @@
+
+/**
+ * See http://www.sencha.com/forum/showthread.php?21756-How-do-I-add-plain-text-to-a-Panel
+ * And http://www.sencha.com/forum/showthread.php?38841-Using-Extjs-to-change-div-content
+ */
+function setBreadcrumbs(page_id) {
+    console.log('[generate breadcrumbs]');
+    jQuery.ajax({
+        type: "GET",
+        url: taxonomies.connector_url+'&method=breadcrumbs&page_id='+page_id,
+        success: function(response) {
+            console.log(response);
+/*
+            if($('#taxonomies-bc').length == 0) {
+                $('#child_pages').after('<div id="lunchbox_breadcrumbs"></div>');
+            }
+*/
+
+            $('#taxonomies-bc').html(response);
+        }
+    });
+}
+
 /**
  * Removes an element from its location. We use "event" here so we can determine
  * where exactly the thing to be removed is located.
@@ -5,7 +28,6 @@
  * E.g. place it in a <td> to remove the containing row:
  * onclick="javascript:remove_me.call(this,event,'tr');"
  */
-
 function remove_me(event,parent) {
     console.debug('[remove_me] parent: '+parent);
     jQuery(this).closest(parent).remove();
@@ -52,10 +74,12 @@ function get_terms(obj,event)
 {
     jQuery('#ajax-loader').show();
     var page_id = jQuery(obj).val();
+    setBreadcrumbs(page_id);
     $.ajax({
         type: "GET",
         url: taxonomies.connector_url+'&method=terms&page_id='+page_id,
         success: function(response) {
+            console.log(response);
             response = jQuery.parseJSON(response);
             jQuery('#terms-container').empty();
             if(response != null)
