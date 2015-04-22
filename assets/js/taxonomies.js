@@ -96,3 +96,26 @@ function get_terms(obj,event)
     });
     event.preventDefault();
 }
+
+/**
+ *
+ * generic view modal call
+ * See user.injuries.blade.php for sample usage
+ * @param obj
+ * @param event
+ */
+function launch_modal(obj,event)
+{
+    var modal = jQuery(obj).data('modal');
+    var width = jQuery(obj).data('width') == undefined ? '60%' : jQuery(obj).data('width');
+    $.ajax({
+        type: "GET",
+        url: $(obj).attr('href'),
+        success: function(response) {
+            jQuery('.modal').modal('hide'); // hide any active modal
+            jQuery('#'+modal).modal('show');
+            jQuery('#'+modal).html(response);
+        }
+    });
+    event.preventDefault();
+}

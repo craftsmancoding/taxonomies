@@ -76,6 +76,7 @@ class PageController extends BaseController {
                  var taxonomies = '.json_encode($connectors).';
             </script>');
         $this->setPlaceholder('loader', $this->config['assets_url'] . 'images/ajax-loader.GIF');
+        $this->setPlaceholder('connector_url', $this->tax->getControllerUrl());
         $this->setPlaceholder('taxonomies',$this->tax->getTaxonomies());
         return $this->fetchTemplate('main/index.php');
     }

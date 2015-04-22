@@ -1,6 +1,8 @@
 <?php
 /**
  * Class responsible for ajax functionality
+ * Like returning json data and use it on js
+ * Or loading a modal window
  */
 namespace Taxonomies;
 class AjaxController extends BaseController {
@@ -25,5 +27,19 @@ class AjaxController extends BaseController {
         $id = $this->modx->getOption('page_id',$scriptProperties);
         $terms =  $this->tax->getTerms($id);
         return json_encode($terms);
+    }
+
+    public function getQuickAddTermsModal()
+    {
+        $this->loadHeader = false;
+        $this->loadFooter = false;
+        // GFD... this can't be set at runtime. See improvised addStandardLayout() function
+        $this->loadBaseJavascript = false;
+
+        $this->setPlaceholder('loader', $this->config['assets_url'] . 'images/ajax-loader.GIF');
+        $this->setPlaceholder('connector_url', $this->tax->getControllerUrl());
+        $this->setPlaceholder('taxonomies',$this->tax->getTaxonomies());
+
+        return $this->fetchTemplate('modal/quick_add_terms.php');
     }
 } 
