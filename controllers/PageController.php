@@ -70,7 +70,6 @@ class PageController extends BaseController {
      */
     public function getIndex(array $scriptProperties = array()) {
         $this->modx->log(\modX::LOG_LEVEL_INFO, print_r($scriptProperties,true),'','Taxonomies PageController:'.__FUNCTION__);
-
         $connectors['connector_url'] = utf8_encode($this->tax->getControllerUrl());
         $this->addHtml('
             <script type="text/javascript">
@@ -81,24 +80,7 @@ class PageController extends BaseController {
         return $this->fetchTemplate('main/index.php');
     }
 
-    /**
-     *
-     * getTerms
-     *
-     * @param array $scriptProperties
-     * @return json
-     */
-    public function getTerms(array $scriptProperties = array()) {
-        $this->loadHeader = false;
-        $this->loadFooter = false;
-        // GFD... this can't be set at runtime. See improvised addStandardLayout() function
-        $this->loadBaseJavascript = false;
-        $id = $this->modx->getOption('page_id',$scriptProperties);
-        $terms =  $this->tax->getTerms($id);
-        return json_encode($terms);
-    }
 
 
-        
 }
 /*EOF*/

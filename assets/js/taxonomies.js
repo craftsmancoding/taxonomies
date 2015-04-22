@@ -78,7 +78,7 @@ function get_terms(obj,event)
     setBreadcrumbs(page_id);
     $.ajax({
         type: "GET",
-        url: taxonomies.connector_url+'&method=terms&page_id='+page_id,
+        url: taxonomies.connector_url+'&class=ajax&method=terms&page_id='+page_id,
         success: function(response) {
             console.log(response);
             response = jQuery.parseJSON(response);
