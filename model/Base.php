@@ -372,4 +372,24 @@ class Base
         }
         return $url;
     }
+
+    /**
+     * getBcRecords - get breadcrumbs record
+     * @param array $scriptProperties
+     * @return json
+     */
+    public function getBcRecords(array $scriptProperties = array()) {
+        $page_id = $this->modx->getOption('page_id',$scriptProperties);
+        $items = array();
+        while ($page = $this->modx->getObject('modResource', $page_id)) {
+            array_unshift($items, array(
+                    'id' => $page->get('id'),
+                    'pagetitle' => $page->get('pagetitle')
+                )
+            );
+            $page_id = $page->get('parent');
+        }
+
+        return $items;
+    }
 }

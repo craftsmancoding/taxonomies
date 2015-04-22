@@ -54,36 +54,13 @@ class PageController extends BaseController {
         // GFD... this can't be set at runtime. See improvised addStandardLayout() function
         $this->loadBaseJavascript = false;
 
-        $items = $this->getBcRecords($scriptProperties);
-        $items = json_decode($items,true);
+        $items = $this->tax->getBcRecords($scriptProperties);
         $last = array_pop($items);
-
 
         $this->setPlaceholder('links', $items);
         $this->setPlaceholder('last', $last['pagetitle']);
         return $this->fetchTemplate('main/breadcrumbs.php');
     }
-
-    public function getBcRecords(array $scriptProperties = array()) {
-        $this->loadHeader = false;
-        $this->loadFooter = false;
-        // GFD... this can't be set at runtime. See improvised addStandardLayout() function
-        $this->loadBaseJavascript = false;
-
-        $page_id = $this->modx->getOption('page_id',$scriptProperties);
-        $items = array();
-        while ($page = $this->modx->getObject('modResource', $page_id)) {
-            array_unshift($items, array(
-                    'id' => $page->get('id'),
-                    'pagetitle' => $page->get('pagetitle')
-                )
-            );
-            $page_id = $page->get('parent');
-        }
-
-        return json_encode($items);
-    }
-
     
     //------------------------------------------------------------------------------
     //! Index
