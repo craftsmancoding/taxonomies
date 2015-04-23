@@ -25,8 +25,7 @@
                     <div id="taxonomies-bc"></div>
                     <div class="terms-wrap">
                         <p class="tax-description">Separate Terms with a comma</p>
-                        <input type="text" name="term-entry" id="term-entry" placeholder="Type Term to be added..." >
-                        <button class="taxonomies-btn taxonomies-btn-info taxonomies-btn-mini" onclick="javascript:add_term(this,event);" >Add</button>
+                        <input type="text" name="term-entry" id="term-entry" onkeyup="javascript:add_term(this,event);" placeholder="Type Term to be added..." >
                         <div class="terms-wrap-inner"></div>
                     </div>
                 </div><!--e.tax-col8-->

@@ -1,9 +1,15 @@
 <?php include dirname(dirname(__FILE__)).'/includes/header.php';  ?>
 
 <script id="term_tpl" type="text/x-handlebars-template">
-	<div class="term-item">
-		<a onclick="javascript:get_terms(this,event);" data-id="{{id}}" href="#">{{name}}</a><a class="remove" onclick="javascript:remove_me.call(this,event,'div');" href="#"><span class="fa fa-remove"></span></a>
-	</div>
+    <div class="term-item">
+        <a onclick="javascript:get_terms(this,event);" data-id="{{id}}" href="#">{{name}}</a><a class="remove" onclick="javascript:remove_me.call(this,event,'div');" href="#"><span class="fa fa-remove"></span></a>
+    </div>
+</script>
+
+<script id="new_term_tpl" type="text/x-handlebars-template">
+    <div class="term-item">
+        <a onclick="return false;" href="#">{{name}}</a><a class="remove" onclick="javascript:remove_me.call(this,event,'div');" href="#"><span class="fa fa-remove"></span></a>
+    </div>
 </script>
 
 <div class="taxonomies_canvas_inner">

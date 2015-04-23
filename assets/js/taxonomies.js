@@ -37,12 +37,15 @@ function remove_me(event,parent) {
  * add_term
  */
 function add_term(obj,event) {
+    if (event.keyCode !== 188) { // 188 is the keycode for ','
+        return; // Do nothing.
+    }
     var term_name = jQuery(obj).prev().val() != undefined ? jQuery('#term-entry').val() : jQuery(obj).data('term_name');
-    console.log(term_name);
     if( term_name !== '' )
     {
-        var term_tpl = Handlebars.compile(jQuery('#term_tpl').html());
-        jQuery('.terms-wrap-inner').append(term_tpl({"name":term_name}));
+        var term_tpl = Handlebars.compile(jQuery('#new_term_tpl').html());
+        jQuery('.terms-wrap-inner').append(term_tpl({"name":term_name.slice(0,-1)}));
+        jQuery('#term-entry').val('');
     }
     event.preventDefault()
 }
