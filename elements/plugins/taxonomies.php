@@ -44,6 +44,14 @@ switch ($modx->event->name) {
         $assets_url = $modx->getOption('taxonomies.assets_url', null, MODX_ASSETS_URL.'components/taxonomies/');
         $modx->log(modX::LOG_LEVEL_DEBUG,'Registering '.$assets_url.'css/taxonomies.css','','taxonomies Plugin:OnManagerPageInit');
         $modx->regClientCSS($assets_url.'css/taxonomies.tree.css');
+        $modx->regClientCSS($assets_url.'css/taxonomies.css');
+        $modx->regClientCSS($assets_url . 'css/bootstrap.css');
+
+        $modx->regClientStartupScript($assets_url . 'js/jquery.min.js');
+        $modx->regClientStartupScript($assets_url . 'js/bootstrap-modal.js');
+        $modx->regClientStartupScript($assets_url . 'js/handlebars-v2.0.0.js');
+        $modx->regClientStartupScript($assets_url.'js/taxonomies.js');
+
         break;
     //------------------------------------------------------------------------------
     //! OnDocFormPrerender
@@ -87,7 +95,9 @@ switch ($modx->event->name) {
         if($class_key=='Term')
         {
             $T = new \Taxonomies\Base($modx);
-            $pages = $T->getTermList($id);
+            $AjaxController = new \Taxonomies\AjaxController($modx);
+            $pages = $AjaxController->getTermList($id);
+
             $modx->regClientStartupHTMLBlock('<script type="text/javascript">
                 MODx.on("ready",function() {
                     MODx.addTab("modx-resource-tabs",{

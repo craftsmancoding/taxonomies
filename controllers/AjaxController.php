@@ -44,4 +44,24 @@ class AjaxController extends BaseController {
 
         return $this->fetchTemplate('modal/terms.php');
     }
+
+    /**
+     * Get an HTML list of terms with links to edit them.
+     * URL format: /manager/?a=resource/update&id=____
+     * TODO: a view file please!  Some formatting that doesn't suck!
+     * @param $page_id
+     * @return string
+     */
+    public function getTermList($page_id)
+    {
+        $this->modx->lexicon->load('taxonomies:default');
+        $c = $this->modx->newQuery('PageTerm');
+        $c->where(array('PageTerm.term_id' => $page_id)); // yes, term_id is the current page
+        $c->sortby('Page.pagetitle','ASC');
+        $Terms = $this->modx->getCollectionGraph('PageTerm','{"Page":{}}',$c);
+
+        $this->setPlaceholder('terms',$Terms);
+        return $this->fetchTemplate('main/page_tab.php');
+
+    }
 } 
