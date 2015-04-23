@@ -59,8 +59,10 @@ class AjaxController extends BaseController {
         $c->where(array('PageTerm.term_id' => $page_id)); // yes, term_id is the current page
         $c->sortby('Page.pagetitle','ASC');
         $Terms = $this->modx->getCollectionGraph('PageTerm','{"Page":{}}',$c);
-
         $this->setPlaceholder('terms',$Terms);
+        $this->setPlaceholder('connector_url', $this->tax->getControllerUrl());
+        $this->setPlaceholder('page_id', $page_id);
+
         return $this->fetchTemplate('main/page_tab.php');
 
     }

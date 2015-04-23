@@ -5,6 +5,7 @@
   text-decoration: none;
 }
 
+
 #taxonomies_header a:hover,
 #taxonomies_canvas a:hover,
 .taxonomies_nav_item a:hover {
@@ -124,6 +125,7 @@ h2.taxonomies_cmp_heading {
   text-shadow: none !important;
   cursor: pointer !important;
   display: inline-block;
+    text-decoration: none;
 }
 
 .taxonomies-btn-orange {
@@ -436,6 +438,10 @@ margin-bottom: 10px;
     max-height: 300px !important;
     overflow: hidden !important;
     overflow-y: auto !important;
+}
+
+.tax-modal-body a {
+    text-decoration: none;
 }
 
 .tax-col2

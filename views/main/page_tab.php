@@ -10,7 +10,7 @@
     </div>
 </script>
 
-<a class="taxonomies-btn taxonomies-btn-primary taxonomies-btn-mini " data-toggle="modal" data-id="7" data-modal="quick-add-terms" href="/modx231/manager/?a=8&class=ajax&method=termsmodal&page_id=7" onclick="javascript:launch_modal(this,event);">Quick Add Terms</a>
+<a class="taxonomies-btn taxonomies-btn-primary taxonomies-btn-mini " data-toggle="modal" data-id="<?php print $data['page_id']; ?>" data-modal="quick-add-terms" href="<?php print $data['connector_url']; ?>&class=ajax&method=termsmodal&page_id=<?php print $data['page_id']; ?>" onclick="javascript:launch_modal(this,event);">Quick Add Terms</a>
 
 <div class="x-panel-body panel-desc x-panel-body-noheader x-panel-body-noborder">
     <p>Pages which use this Term.</p>
@@ -32,7 +32,7 @@
         </tbody>
     </table>
 <?php else: ?>
-    <div>No pages have been assigned to this Term.</div>
+    <div class="taxonomies-danger">No pages have been assigned to this Term.</div>
 <?php endif; ?>
 
 <div class="modal fade" id="quick-add-terms"></div>

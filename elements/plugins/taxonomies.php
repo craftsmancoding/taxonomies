@@ -46,6 +46,7 @@ switch ($modx->event->name) {
         $modx->regClientCSS($assets_url.'css/taxonomies.tree.css');
         $modx->regClientCSS($assets_url.'css/taxonomies.css');
         $modx->regClientCSS($assets_url . 'css/bootstrap.css');
+        $modx->regClientCSS('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.css');
 
         $modx->regClientStartupScript($assets_url . 'js/jquery.min.js');
         $modx->regClientStartupScript($assets_url . 'js/bootstrap-modal.js');
@@ -97,6 +98,12 @@ switch ($modx->event->name) {
             $T = new \Taxonomies\Base($modx);
             $AjaxController = new \Taxonomies\AjaxController($modx);
             $pages = $AjaxController->getTermList($id);
+
+            $connectors['connector_url'] = utf8_encode($T->getControllerUrl());
+            $modx->regClientStartupHTMLBlock('
+            <script type="text/javascript">
+                 var taxonomies = '.json_encode($connectors).';
+            </script>');
 
             $modx->regClientStartupHTMLBlock('<script type="text/javascript">
                 MODx.on("ready",function() {
