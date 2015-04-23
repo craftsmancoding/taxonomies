@@ -393,7 +393,6 @@ table.tax-classy-alt  td
 }
 
 .terms-wrap {
-  border: 1px solid #ddd;
 padding: 10px;
 }
 
@@ -430,6 +429,22 @@ margin-bottom: 10px;
   font-style: italic;
 }
 
+.tax-modal-body
+{
+
+}
+
+.tax-col2
+{
+    width:20%;
+    float: left;
+}
+.tax-col8
+{
+    width:80%;
+    float: right;
+}
+
 .tax-col4
 {
     width:40%;
@@ -452,6 +467,38 @@ margin-bottom: 10px;
 {
     display: none;
 }
+
+.tax-tabs {
+    padding-top: 20px;
+    padding-bottom: 20px;
+    border-right: 1px solid #ddd;
+}
+
+.tax-tabs li {
+    border: 1px solid #ddd;
+    padding: 5px;
+    text-align: center;
+    border-right: none ;
+    border-bottom: none ;
+}
+
+.tax-tabs li.active {
+    width: 91.5%;
+    background: #fff;
+
+}
+.tax-tabs li:last-child {
+    border-bottom: 1px solid #ddd;
+}
+
+.tax-tabs li a {
+    display: block;
+    color: #5F5C5C !important;
+    font-size: 12px;
+    font-weight: bold
+;
+}
+
 
 
 /* The Magnificent Clearfix: Updated to prevent margin-collapsing on child elements.

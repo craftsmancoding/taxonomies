@@ -40,6 +40,6 @@ class AjaxController extends BaseController {
         $this->setPlaceholder('connector_url', $this->tax->getControllerUrl());
         $this->setPlaceholder('taxonomies',$this->tax->getTaxonomies());
 
-        return $this->fetchTemplate('modal/quick_add_terms.php');
+        return $this->fetchTemplate('modal/terms.php');
     }
 } 

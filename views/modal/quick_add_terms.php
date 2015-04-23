@@ -1,4 +1,4 @@
-<div class="modal-backdrop fade in" style="height: 995px;"></div>
+<div class="modal-backdrop fade in" style="height: 100%;"></div>
 <div class="modal-dialog">
     <div class="modal-content">
         <div class="modal-header">

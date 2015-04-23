@@ -36,7 +36,7 @@ class PageController extends BaseController {
 
 
         $this->modx->regClientStartupScript($this->config['assets_url'] . 'js/jquery.min.js');
-        $this->modx->regClientStartupScript($this->config['assets_url'] . 'js/bootstrap.js');
+        $this->modx->regClientStartupScript($this->config['assets_url'] . 'js/bootstrap-modal.js');
         $this->modx->regClientStartupScript($this->config['assets_url'] . 'js/handlebars-v2.0.0.js');
         $this->modx->regClientStartupScript($this->config['assets_url'].'js/taxonomies.js');
         $this->tax = new Base($this->modx);
