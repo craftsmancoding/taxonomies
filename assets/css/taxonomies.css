@@ -514,6 +514,16 @@ margin-bottom: 10px;
     color: #5F5C5C !important;
 }
 
+.tax-fs {
+    border: 1px solid #ddd;
+}
+.tax-fs legend {
+    font-size: 13px;
+    font-weight: bold;
+    color: #5A5858;
+    border: 1px solid #ddd !important;
+    padding: 3px 15px;
+}
 /* The Magnificent Clearfix: Updated to prevent margin-collapsing on child elements.
    j.mp/bestclearfix */
 .clear:before, .clear:after,

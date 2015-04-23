@@ -10,22 +10,26 @@
     </div>
 </script>
 
-<a class="taxonomies-btn taxonomies-btn-primary taxonomies-btn-mini " data-toggle="modal" data-id="<?php print $data['page_id']; ?>" data-modal="quick-add-terms" href="<?php print $data['connector_url']; ?>&class=ajax&method=termsmodal&page_id=<?php print $data['page_id']; ?>" onclick="javascript:launch_modal(this,event);">Quick Add Terms</a>
 
 <?php if($data['taxonomies']) : ?>
     <?php
             $T = new \Taxonomies\Base($modx);
             foreach ($data['taxonomies'] as $t) :
         ?>
-            <fieldset><legend><?php  print $t->get('pagetitle'); ?></legend>
+            <fieldset class="tax-fs">
+                <legend style="border: 1px solid #ddd !important;">
+                    <?php  print $t->get('pagetitle'); ?>
+                </legend>
                 <?php
                     $properties = $t->get('properties');
                     if ($children = $this->modx->getOption('children', $properties, array()))
                     {
                        print  $T->getFieldItems($data['current_values'], $children); // 1st time
+
                     }
                 ?>
-
+                <a class="pull-right taxonomies-btn taxonomies-btn-primary taxonomies-btn-mini " data-toggle="modal" data-id="<?php print $t->get('id') ?>" data-modal="quick-add-terms" href="<?php print $data['connector_url']; ?>&class=ajax&method=termsmodal&page_id=<?php print $t->get('id') ?>" onclick="javascript:launch_modal(this,event);"><i class="fa fa-edit"></i>&nbsp;Taxonomy Quick Edit</a>
+                <div class="clear">&nbsp;</div>
             </fieldset>
         <?php endforeach; ?>
 

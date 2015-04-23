@@ -84,7 +84,7 @@ class AjaxController extends BaseController {
         $this->setPlaceholder('taxonomies', $this->modx->getCollection('Taxonomy', $c));
         $this->setPlaceholder('connector_url', $this->tax->getControllerUrl());
         $this->setPlaceholder('page_id', $page_id);
-        $this->setPlaceholder('connector_url', $current_values);
+        $this->setPlaceholder('current_values', $current_values);
 
         return $this->fetchTemplate('main/tax_tab.php');
     }
