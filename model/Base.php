@@ -268,6 +268,7 @@ class Base
     }
 
 
+
     /**
      * Dictate all page terms (array) for the given page_id (int)
      * This forces the modx_page_terms table (PageTerm object) to have the latest info.
@@ -335,5 +336,20 @@ class Base
             }
         }
         return $url;
+    }
+
+    public function getBcRecords(array $scriptProperties = array()) {
+        $page_id = $this->modx->getOption('page_id',$scriptProperties);
+        $items = array();
+        while ($page = $this->modx->getObject('modResource', $page_id)) {
+                array_unshift($items, array(
+                            'id' => $page->get('id'),
+                            'pagetitle' => $page->get('pagetitle')
+                            )
+                );
+        $page_id = $page->get('parent');
+        }
+
+        return $items;
     }
 }
