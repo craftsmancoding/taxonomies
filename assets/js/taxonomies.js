@@ -42,7 +42,7 @@ function add_term(obj,event) {
     if( term_name !== '' )
     {
         var term_tpl = Handlebars.compile(jQuery('#term_tpl').html());
-        jQuery('.terms-wrap').append(term_tpl({"name":term_name}));
+        jQuery('.terms-wrap-inner').append(term_tpl({"name":term_name}));
     }
     event.preventDefault()
 }
@@ -59,7 +59,7 @@ function add_all_terms(event) {
     if(terms.length !== 0)
     {
         terms.each(function() {
-            jQuery('.terms-wrap').append(term_tpl({"name":jQuery(this).data('row_term_name')}));
+            jQuery('.terms-wrap-inner').append(term_tpl({"name":jQuery(this).data('row_term_name')}));
         });
     }
 
@@ -73,21 +73,20 @@ function add_all_terms(event) {
 function get_terms(obj,event)
 {
     jQuery('#ajax-loader').show();
-    var page_id = jQuery(obj).val() == '' ? jQuery(obj).data('id') : jQuery(obj).val();
-    console.log(page_id);
+    var page_id = jQuery(obj).data('id');
     setBreadcrumbs(page_id);
     $.ajax({
         type: "GET",
         url: taxonomies.connector_url+'&class=ajax&method=terms&page_id='+page_id,
         success: function(response) {
-            console.log(response);
             response = jQuery.parseJSON(response);
             jQuery('#terms-container').empty();
             if(response != null)
             {
+                jQuery('.terms-wrap-inner').empty();
                 jQuery.each( response, function( key, value ) {
-                    var row_term_tpl = Handlebars.compile(jQuery('#row_term_tpl').html());
-                    jQuery('#terms-container').append(row_term_tpl(value));
+                    var term_tpl = Handlebars.compile(jQuery('#term_tpl').html());
+                    jQuery('.terms-wrap-inner').append(term_tpl({"name":value.pagetitle,"id":value.id}));
                 });
             }
 
@@ -108,6 +107,7 @@ function launch_modal(obj,event)
 {
     var modal = jQuery(obj).data('modal');
     var width = jQuery(obj).data('width') == undefined ? '60%' : jQuery(obj).data('width');
+    var page_id = jQuery(obj).data('id');
     $.ajax({
         type: "GET",
         url: $(obj).attr('href'),
@@ -115,6 +115,7 @@ function launch_modal(obj,event)
             jQuery('.modal').modal('hide'); // hide any active modal
             jQuery('#'+modal).modal('show');
             jQuery('#'+modal).html(response);
+            setBreadcrumbs(page_id);
         }
     });
     event.preventDefault();

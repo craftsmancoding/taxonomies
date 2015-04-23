@@ -59,6 +59,7 @@ class PageController extends BaseController {
 
         $this->setPlaceholder('links', $items);
         $this->setPlaceholder('last', $last['pagetitle']);
+        $this->setPlaceholder('connector_url', $this->tax->getControllerUrl());
         return $this->fetchTemplate('main/breadcrumbs.php');
     }
     

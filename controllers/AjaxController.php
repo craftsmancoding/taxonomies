@@ -29,7 +29,7 @@ class AjaxController extends BaseController {
         return json_encode($terms);
     }
 
-    public function getQuickAddTermsModal()
+    public function getTermsModal(array $scriptProperties = array())
     {
         $this->loadHeader = false;
         $this->loadFooter = false;
@@ -39,6 +39,8 @@ class AjaxController extends BaseController {
         $this->setPlaceholder('loader', $this->config['assets_url'] . 'images/ajax-loader.GIF');
         $this->setPlaceholder('connector_url', $this->tax->getControllerUrl());
         $this->setPlaceholder('taxonomies',$this->tax->getTaxonomies());
+        $this->setPlaceholder('taxonomy_id',$scriptProperties['page_id']);
+        $this->setPlaceholder('terms',$this->tax->getTerms($scriptProperties['page_id']));
 
         return $this->fetchTemplate('modal/terms.php');
     }
