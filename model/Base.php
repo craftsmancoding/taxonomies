@@ -15,19 +15,7 @@ class Base
         $this->modx =& $modx;
     }
 
-    public function __destruct()
-    {
-        $this->modx->setLogLevel($this->old_log_level);
-        /*
-        // TODO
-        $xpdo->setLogTarget(array(
-           'target' => 'FILE',
-           'options' => array(
-               'filename' => 'install.' . strftime('%Y-%m-%dT%H:%M:%S')
-            )
-        ));
-        */
-    }
+
 
     /**
      * Logging Snippet info
@@ -254,20 +242,6 @@ class Base
         $this->modx->log(\modX::LOG_LEVEL_DEBUG, "pageTerms for page " . $page_id . ': ' . print_r($out, true), '', __CLASS__);
         return $out;
     }
-
-    /**
-     * getForm
-     *
-     * @param integer $page_id current MODX resource
-     * @return string HTML form.
-     */
-    public function getForm($page_id)
-    {
-        $current_values = $this->getPageTerms($page_id);
-        return $this->buildForm($current_values);
-    }
-
-
 
     /**
      * Dictate all page terms (array) for the given page_id (int)

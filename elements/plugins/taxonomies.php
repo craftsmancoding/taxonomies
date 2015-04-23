@@ -80,14 +80,22 @@ switch ($modx->event->name) {
        
         if (!in_array($class_key,$skip_classes)) {
             $T = new \Taxonomies\Base($modx);
-            $form = $T->getForm($id);
+            $AjaxController = new \Taxonomies\AjaxController($modx);
+            $forms = $AjaxController->getTaxonomyTab($id);
+
+            $connectors['connector_url'] = utf8_encode($T->getControllerUrl());
+            $modx->regClientStartupHTMLBlock('
+            <script type="text/javascript">
+                 var taxonomies = '.json_encode($connectors).';
+            </script>');
+
             $modx->regClientStartupHTMLBlock('<script type="text/javascript">
                 MODx.on("ready",function() {
                     MODx.addTab("modx-resource-tabs",{
                         title: "'.$modx->lexicon('taxonomies').'",
                         id: "taxonomies-resource-tab",
                         width: "95%",
-                        html: '.json_encode(utf8_encode("$form")).'
+                        html: '.json_encode(utf8_encode("$forms")).'
                     });
                 });                
             </script>');

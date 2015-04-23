@@ -48,7 +48,6 @@ class AjaxController extends BaseController {
     /**
      * Get an HTML list of terms with links to edit them.
      * URL format: /manager/?a=resource/update&id=____
-     * TODO: a view file please!  Some formatting that doesn't suck!
      * @param $page_id
      * @return string
      */
@@ -65,5 +64,28 @@ class AjaxController extends BaseController {
 
         return $this->fetchTemplate('main/page_tab.php');
 
+    }
+
+    /**
+     * Get an HTML list of tax/terms with with forms to assign them to a page
+     * @param $page_id
+     * @return string
+     */
+    public function getTaxonomyTab($page_id)
+    {
+        $this->modx->lexicon->load('taxonomies:default');
+
+        $current_values = $this->tax->getPageTerms($page_id);
+
+        $c = $this->modx->newQuery('Taxonomy');
+        $c->where(array('published' => true, 'class_key' => 'Taxonomy'));
+        $c->sortby('menuindex', 'ASC');
+
+        $this->setPlaceholder('taxonomies', $this->modx->getCollection('Taxonomy', $c));
+        $this->setPlaceholder('connector_url', $this->tax->getControllerUrl());
+        $this->setPlaceholder('page_id', $page_id);
+        $this->setPlaceholder('connector_url', $current_values);
+
+        return $this->fetchTemplate('main/tax_tab.php');
     }
 } 
