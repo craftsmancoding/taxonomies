@@ -35,6 +35,6 @@
     <div class="taxonomies-danger">No pages have been assigned to this Term.</div>
 <?php endif; ?>
 
-<div class="modal fade" id="quick-add-terms"></div>
+<div class="modal" id="quick-add-terms"></div>
 
 <?php include dirname(dirname(__FILE__)).'/includes/footer.php';  ?>

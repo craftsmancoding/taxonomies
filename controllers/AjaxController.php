@@ -31,6 +31,7 @@ class AjaxController extends BaseController {
 
     public function getTermsModal(array $scriptProperties = array())
     {
+
         $this->loadHeader = false;
         $this->loadFooter = false;
         // GFD... this can't be set at runtime. See improvised addStandardLayout() function

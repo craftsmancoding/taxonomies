@@ -10,11 +10,6 @@ function setBreadcrumbs(page_id) {
         url: taxonomies.connector_url+'&method=breadcrumbs&page_id='+page_id,
         success: function(response) {
             console.log(response);
-/*
-            if($('#taxonomies-bc').length == 0) {
-                $('#child_pages').after('<div id="lunchbox_breadcrumbs"></div>');
-            }
-*/
 
             $('#taxonomies-bc').html(response);
         }
@@ -115,7 +110,6 @@ function launch_modal(obj,event)
         type: "GET",
         url: $(obj).attr('href'),
         success: function(response) {
-            jQuery('.modal').modal('hide'); // hide any active modal
             jQuery('#'+modal).modal('show');
             jQuery('#'+modal).html(response);
             setBreadcrumbs(page_id);

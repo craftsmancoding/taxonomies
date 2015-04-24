@@ -11,6 +11,7 @@
 </script>
 
 
+
 <?php if($data['taxonomies']) : ?>
     <?php
             $T = new \Taxonomies\Base($modx);
@@ -37,6 +38,8 @@
     <div class="taxonomies-danger">No Taxonomy Found.</div>
 <?php endif; ?>
 
-<div class="modal fade" id="quick-add-terms"></div>
+
+
+<div class="modal" id="quick-add-terms"></div>
 
 <?php include dirname(dirname(__FILE__)).'/includes/footer.php';  ?>
