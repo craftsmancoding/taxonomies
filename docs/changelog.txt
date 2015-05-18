@@ -33,3 +33,7 @@ Limitations: the feature set is somewhat utilitarian:
 ---------------------------
 - Fixed one more hard-coded modx_site_content table name
 - Updated Snippet DocBlocks for compatibility with updated Repoman property parsing.
+
+1.3.2
+---------------------------
+- Updated package so .gitignore's would not be included.

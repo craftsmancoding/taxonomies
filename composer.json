@@ -39,12 +39,12 @@
     "extra": {
         "package_name": "Taxonomies",
         "namespace": "taxonomies",
-        "version": "1.3.1",
+        "version": "1.3.2",
         "release": "pl",
         "category":"Taxonomies",
         "core_path": "",
         "orm_path": "model/",
-        "omit": ["assets/","screenshots/","tests/","composer.json","composer.lock","builds/","phpunit.xml",".git"],
+        "omit": ["assets/","screenshots/","tests/","composer.json","composer.lock","builds/","phpunit.xml",".git",".gitignore","vendor/craftsmancoding/formbuilder/.gitignore"],
         "assets_path" : "assets/",
         "seeds_path": ["model/seeds/base"],
         "packages":[
