@@ -269,6 +269,7 @@ class Base
 
         if ($Terms = $this->modx->getCollectionGraph('PageTerm','{"Page":{}}',$c)) {
             foreach ($Terms as $t) {
+                if(!$t->Page) continue;
                 $out .= '<tr>
                     <td><a href="'.MODX_MANAGER_URL.'?a=resource/update&id='.$t->get('page_id') .'">'.$t->Page->get('pagetitle').' ('.$t->get('page_id').')</a></td>
                     <td>'.$t->Page->get('alias').'</td>
