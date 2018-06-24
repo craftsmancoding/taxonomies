@@ -41,7 +41,13 @@ class taxonomyTest extends \PHPUnit_Framework_TestCase
         self::$modx->initialize('mgr');
         //self::$modx->setLogTarget('ECHO');
         //self::$modx->setLogLevel(4);
-        $core_path = self::$modx->getOption('taxonomies.core_path', '', MODX_CORE_PATH . 'components/taxonomies/');
+        $pkgs = self::$modx->getOption('extension_packages');
+        if (strpos($pkgs, 'taxonomies') === false)
+        {
+            die('Taxonomies package not detected in MODX extension_packages. Is the package installed?');
+        }
+
+            $core_path = self::$modx->getOption('taxonomies.core_path', '', MODX_CORE_PATH . 'components/taxonomies/');
         self::$modx->addExtensionPackage('taxonomies', "{$core_path}model/", array('tablePrefix' => 'tax_'));
 
         self::_deleteTestResources();
@@ -175,6 +181,16 @@ class taxonomyTest extends \PHPUnit_Framework_TestCase
                 'seq' => 0
             ));
             self::$PageTerm['2']->save();
+        }
+
+        if (!self::$PageTerm['3'] = self::$modx->getObject('PageTerm', array('term_id' => self::$Term['b']->get('id'), 'page_id' => self::$P['2']->get('id')))) {
+            self::$PageTerm['3'] = self::$modx->newObject('PageTerm');
+            self::$PageTerm['3']->fromArray(array(
+                'page_id' => self::$P['2']->get('id'),
+                'term_id' => self::$Term['b']->get('id'),
+                'seq' => 0
+            ));
+            self::$PageTerm['3']->save();
         }
 
     }
@@ -419,11 +435,24 @@ class taxonomyTest extends \PHPUnit_Framework_TestCase
         // You have to do this for EACH test function when you are testing a Snippet!
         global $modx;
         $modx = self::$modx;
+
+        // Simple
         $props = array();
         $props['innerTpl'] = '<li>[[+pagetitle]] <strong>([[+count]])</strong></li>';
         $props['outerTpl'] = '<ul>[[+content]]</ul>';
         $actual = self::$modx->runSnippet('getTagCloud', $props);
-        $expected = '<ul><li>Test Term A <strong>(1)</strong></li><li>Test Term B <strong>(1)</strong></li></ul>';
+        $expected = '<ul><li>Test Term A <strong>(1)</strong></li><li>Test Term B <strong>(2)</strong></li></ul>';
+        $this->assertEquals($expected, $actual);
+
+
+        // Test Sort by Count
+        $props = array();
+        $props['innerTpl'] = '<li>[[+pagetitle]] <strong>([[+count]])</strong></li>';
+        $props['outerTpl'] = '<ul>[[+content]]</ul>';
+        $props['sort'] = 'count';
+        $props['dir'] = 'DESC';
+        $actual = self::$modx->runSnippet('getTagCloud', $props);
+        $expected = '<ul><li>Test Term B <strong>(2)</strong></li><li>Test Term A <strong>(1)</strong></li></ul>';
         $this->assertEquals($expected, $actual);
     }
 
@@ -441,7 +470,7 @@ class taxonomyTest extends \PHPUnit_Framework_TestCase
         $expected = '<ul><li>Test Term A <strong>(1)</strong></li><li>Test Term B <strong>(1)</strong></li><li>Test Term C <strong>(0)</strong></li></ul>';
 
         $this->assertTrue( (bool) strpos ($actual, '<li>Test Term A <strong>(1)</strong></li>') );
-        $this->assertTrue( (bool) strpos ($actual, '<li>Test Term B <strong>(1)</strong></li>') );
+        $this->assertTrue( (bool) strpos ($actual, '<li>Test Term B <strong>(2)</strong></li>') );
         $this->assertTrue( (bool) strpos ($actual, '<li>Test Term C <strong>(0)</strong></li>') );
     }
 
@@ -681,9 +710,47 @@ class taxonomyTest extends \PHPUnit_Framework_TestCase
 
     }
 
-    public function testGetTaxonomiesAndTerms()
+    public function testGetPagesByTerm()
     {
+        // You MUST set $modx as a global variable, or runSnippet will encounter errors!
+        // You have to do this for EACH test function when you are testing a Snippet!
+        // Simple: one page for term A
+        global $modx;
+        $modx = self::$modx;
+        $props = array();
+        $props['term_id'] = self::$Term['a']->get('id');
+        $actual = self::$modx->runSnippet('getPagesByTerm', $props);
+        $expected = '<ul><li><a href="'.self::$modx->makeUrl(self::$P['1']->get('id')).'">Test Page 1</a></li></ul>';
+        $this->assertEquals($expected,$actual);
 
+        // Multiple pages for term B
+        $props = array();
+        $props['term_id'] = self::$Term['b']->get('id');
+        $actual = self::$modx->runSnippet('getPagesByTerm', $props);
+        $expected = '<ul><li><a href="'.self::$modx->makeUrl(self::$P['1']->get('id')).'">Test Page 1</a></li><li><a href="'.self::$modx->makeUrl(self::$P['2']->get('id')).'">Test Page 2</a></li></ul>';
+        $this->assertEquals(normalize_string($expected),normalize_string($actual));
+
+        // Test limit
+        $props = array();
+        $props['term_id'] = self::$Term['b']->get('id');
+        $props['limit'] = 1;
+        $actual = self::$modx->runSnippet('getPagesByTerm', $props);
+        $expected = '<ul><li><a href="'.self::$modx->makeUrl(self::$P['1']->get('id')).'">Test Page 1</a></li></ul>';
+        $this->assertEquals(normalize_string($expected),normalize_string($actual));
+
+
+        // Test sort dir
+        $props = array();
+        $props['term_id'] = self::$Term['b']->get('id');
+        $props['dir'] = 'DESC';
+        $actual = self::$modx->runSnippet('getPagesByTerm', $props);
+        $expected = '<ul><li><a href="'.self::$modx->makeUrl(self::$P['2']->get('id')).'">Test Page 2</a></li><li><a href="'.self::$modx->makeUrl(self::$P['1']->get('id')).'">Test Page 1</a></li></ul>';
+        $this->assertEquals(normalize_string($expected),normalize_string($actual));
+
+//
+//        $this->assertTrue( (bool) strpos ($actual, '<li>Test Term A <strong>(1)</strong></li>') );
+//        $this->assertTrue( (bool) strpos ($actual, '<li>Test Term B <strong>(1)</strong></li>') );
+//        $this->assertTrue( (bool) strpos ($actual, '<li>Test Term C <strong>(0)</strong></li>') );
     }
 
 }

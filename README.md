@@ -81,16 +81,18 @@ Terms may be nested, e.g. a "Mammal" term may have children "Dog" and "Cat".
 
 ## Known Problems
 
+There are a couple known "warts" due to the manager's use of Ext JS.
+
 **If you right-click on the web context, the menu displays the option to "Create Term Here"** 
 
 Ideally, the menu shouldn't print this as an option, but the GUI used in the MODX resource tree is not easily
-customizable (!@%$#!@ you Ext JS!).  So although that option appears in the menu, you are never allowed to complete
+customizable.  So although that option _appears_ in the menu, you are never _allowed_ to complete
 that action: Terms must be the children of Taxonomies or other Terms. Some changes to the Ext JS in the core are 
 required before this can be fully fixed.
 
 **The GUI issues no warning when you drag a Term into a regular folder**
 
-Although the GUI appears to let you do this, the action is terminated on the backend.  Remember: A Term *must* be 
+Although the GUI _appears_ to let you do this, the action request is terminated on the backend.  Remember: A Term *must* be 
 a child of Taxonomy OR of another Term.  It may appear that the page has been relocated, but the record will not 
 be saved in the database.  Once the MODX manager is reloaded, the page will appear to revert back to its original 
 position. 
@@ -101,7 +103,7 @@ position.
 
 Everett Griffiths
 
-Copyright 2014
+Copyright 2015
 
 Official Documentation: https://github.com/craftsmancoding/taxonomies/wiki
 

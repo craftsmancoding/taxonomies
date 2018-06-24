@@ -10,12 +10,12 @@
  * 
  * Parameters
  * -----------------------------
- * @param string $outerTpl Format the Outer Wrapper of List (Optional)
- * @param string $innerTpl Format the Inner Item of List
- * @param string $sort column to sort by (default: pagetitle)
- * @param string $dir ASC (default) or DESC
- * @param integer $limit the max number of records
- * @param integer $start the offset
+ * @param textfield $outerTpl Format the Outer Wrapper of List (Optional)
+ * @param textfield $innerTpl Format the Inner Item of List
+ * @param textfield $sort column to sort by default=pagetitle
+ * @param textfield $dir sorting direction, ASC or DESC default=ASC
+ * @param numberfield $limit the max number of records
+ * @param numberfield $start the offset
  *
  * Variables
  * ---------

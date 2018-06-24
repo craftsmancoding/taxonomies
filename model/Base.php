@@ -111,8 +111,8 @@ class Base
      * getTaxonomiesAndTerms : Taxonomies and Terms. BOOM.
      *
      * Get data structure describing taxonomy/terms for use in the form.
-     * TODO: use the json caching here.
-     * @return array containing structure compatible w Formbuilder: $data['Taxonomy Name']['Term Name'] = page ID
+     *
+     * @return array containing structure compatible w Formbuilder: $data['Taxonomy Name'][term_id] = Term Title
      */
     public function getTaxonomiesAndTerms()
     {
@@ -123,18 +123,13 @@ class Base
 
         if ($Ts = $this->modx->getCollection('Taxonomy', $c)) {
             foreach ($Ts as $t) {
-                $data[$t->get('pagetitle')] = array();
-                $c = $this->modx->newQuery('Term');
-                $c->where(array('published' => true, 'class_key' => 'Term', 'parent' => $t->get('id')));
-                $c->sortby('menuindex', 'ASC');
-                if ($Terms = $this->modx->getCollection('Term', $c)) {
-                    foreach ($Terms as $term) {
-                        $data[$t->get('pagetitle')][$term->get('id')] = $term->get('pagetitle');
-                    }
-                } // Plug the spot for the taxonomy?
-                else {
-                    $data[$t->get('pagetitle')] = array();
+                $props = $t->get('properties');
+                if (!isset($props['children'])) {
+                    $data[ $t->get('pagetitle') ] = array(); // plug?
+                    continue;
                 }
+
+                $data[ $t->get('pagetitle') ] = $this->extractChildren(array(), $props['children']);
             }
         }
 
@@ -142,6 +137,25 @@ class Base
     }
 
     /**
+     * wormhole : pulls child data out of JSON cache
+     */
+    public function extractChildren($array, $data, $indent='')
+    {
+        foreach ($data as $page_id => $node) {
+            if (empty($page_id)) {
+                continue;
+            }
+            $array[$page_id] = $indent . ' ' . $node['pagetitle'] .' ('.$page_id.')';
+            if ($node['children']) {
+                $array = $this->extractChildren($array, $node['children'], $indent . '--');
+            }
+        }
+
+        return $array;
+    }
+
+    /**
+     * A!#%$ this needs to incorporate the getTaxonomiesAndTerms function
      * @param array $current_values
      * @return string
      */
@@ -182,6 +196,10 @@ class Base
   
         $out = '';
         foreach ($children as $page_id => $def) {
+            if (empty($page_id))
+            {
+                continue;
+            }
             $indent = str_repeat('--', $indent_multiplier);
             if (isset($def['published']) && $def['published'])
             {
